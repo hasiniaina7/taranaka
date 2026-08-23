@@ -18,7 +18,7 @@ Warns contributors about scored duplicate candidates without exposing private pr
                     class="mt-0.5 size-5 shrink-0"
                     aria-hidden="true"
                 />
-    
+
                 <div class="min-w-0 flex-1">
                     <h2
                         id="duplicate-warning-heading"
@@ -26,13 +26,13 @@ Warns contributors about scored duplicate candidates without exposing private pr
                     >
                         {{ __('person.duplicate_warning_title') }}
                     </h2>
-    
+
                     <p class="mt-1 text-sm">
                         {{ __('person.duplicate_warning_intro') }}
                     </p>
                 </div>
             </div>
-    
+
             <ul class="mt-4 space-y-3">
                 @foreach ($candidates as $candidate)
                     <li wire:key="duplicate-candidate-{{ $candidate['id'] }}">
@@ -45,7 +45,7 @@ Warns contributors about scored duplicate candidates without exposing private pr
                                     >
                                         {{ $candidate['name'] }}
                                     </a>
-    
+
                                     @if ($candidate['private'])
                                         <p class="mt-1 text-xs font-medium">
                                             {{ __('person.duplicate_private_profile') }}
@@ -54,7 +54,7 @@ Warns contributors about scored duplicate candidates without exposing private pr
                                         @if ($candidate['lifespan'])
                                             <p class="mt-1 text-sm">{{ $candidate['lifespan'] }}</p>
                                         @endif
-    
+
                                         @if ($candidate['lineages'] !== [])
                                             <p class="mt-1 text-xs">
                                                 {{ __('lineage.lineage') }} : {{ implode(', ', $candidate['lineages']) }}
@@ -62,12 +62,12 @@ Warns contributors about scored duplicate candidates without exposing private pr
                                         @endif
                                     @endif
                                 </div>
-    
+
                                 <span class="rounded-full border border-current/30 px-2 py-1 text-xs font-semibold">
                                     {{ $candidate['high_confidence'] ? __('person.duplicate_high_confidence') : __('person.duplicate_low_confidence') }}
                                 </span>
                             </div>
-    
+
                             <div class="mt-3 flex items-center gap-3">
                                 <label
                                     for="duplicate-score-{{ $candidate['id'] }}"
@@ -75,7 +75,7 @@ Warns contributors about scored duplicate candidates without exposing private pr
                                 >
                                     {{ __('person.duplicate_similarity') }} : {{ $candidate['percentage'] }} %
                                 </label>
-    
+
                                 <progress
                                     id="duplicate-score-{{ $candidate['id'] }}"
                                     value="{{ $candidate['percentage'] }}"
@@ -85,7 +85,7 @@ Warns contributors about scored duplicate candidates without exposing private pr
                                     {{ $candidate['percentage'] }} %
                                 </progress>
                             </div>
-    
+
                             <button
                                 type="button"
                                 wire:click="reuse({{ $candidate['id'] }})"
@@ -97,7 +97,7 @@ Warns contributors about scored duplicate candidates without exposing private pr
                     </li>
                 @endforeach
             </ul>
-    
+
             @if ($this->hasHighConfidence())
                 <button
                     type="button"
