@@ -75,6 +75,9 @@ return [
     'delete_person'       => 'Verwijder persoon',
     'delete_relationship' => 'Verwijder relatie',
 
+    'managed_by_another_team' => 'Beheerd door een ander team',
+    'propose_edit'            => 'Wijziging voorstellen',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Naam',

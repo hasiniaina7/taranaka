@@ -3,9 +3,25 @@
         <div class="flex flex-wrap items-start justify-center gap-2">
             <div class="max-w-full min-w-max flex-1 grow items-center justify-center align-middle">
                 {{ __('person.profile') }}
+
+                @cannot('update', $person)
+                    <div class="text-sm font-normal text-amber-600 dark:text-amber-400">
+                        {{ __('person.managed_by_another_team') }}
+                    </div>
+                @endcannot
             </div>
 
-            @if (auth()->user()->hasPermission('person:update') or auth()->user()->hasPermission('person:delete'))
+            @cannot('update', $person)
+                <div class="max-w-min min-w-max flex-1 grow text-end">
+                    <x-ts-button href="#" color="secondary" class="text-sm">
+                        <x-ts-icon icon="tabler.message-2-share" class="inline-block size-5" />
+                        {{ __('person.propose_edit') }}
+                    </x-ts-button>
+                </div>
+            @endcannot
+
+            @can('update', $person)
+                @if (auth()->user()->hasPermission('person:update') or auth()->user()->hasPermission('person:delete'))
                 <div class="max-w-min min-w-max flex-1 grow text-end">
                     <x-ts-dropdown icon="tabler.menu-2" position="bottom-end">
                         @if (auth()->user()->hasPermission('person:update'))
@@ -62,7 +78,8 @@
                         @endif
                     </x-ts-dropdown>
                 </div>
-            @endif
+                @endif
+            @endcan
         </div>
     </div>
 

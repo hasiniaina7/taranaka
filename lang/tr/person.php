@@ -75,6 +75,9 @@ return [
     'delete_person'       => 'Kişiyi sil',
     'delete_relationship' => 'İlişkiyi sil',
 
+    'managed_by_another_team' => 'Başka bir ekip tarafından yönetiliyor',
+    'propose_edit'            => 'Değişiklik öner',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Ad',

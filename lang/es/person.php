@@ -64,6 +64,9 @@ return [
     'delete_child'                   => 'Desconectar niño',
     'delete_person'                  => 'Eliminar persona',
     'delete_relationship'            => 'Eliminar relación',
+
+    'managed_by_another_team' => 'Gestionado por otro equipo',
+    'propose_edit'            => 'Proponer un cambio',
     'id'                             => 'IDENTIFICACIÓN',
     'name'                           => 'Nombre',
     'names'                          => 'Nombres',

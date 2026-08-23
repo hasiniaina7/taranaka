@@ -75,6 +75,9 @@ return [
     'delete_person'       => '删除人物',
     'delete_relationship' => '解除关系',
 
+    'managed_by_another_team' => '由另一个团队管理',
+    'propose_edit'            => '提议修改',
+
     // Attributes
     'id'          => 'ID',
     'name'        => '姓名',

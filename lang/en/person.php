@@ -75,6 +75,9 @@ return [
     'delete_person'       => 'Delete person',
     'delete_relationship' => 'Delete relationship',
 
+    'managed_by_another_team' => 'Managed by another team',
+    'propose_edit'            => 'Propose a change',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Name',

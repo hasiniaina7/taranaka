@@ -75,6 +75,9 @@ return [
     'delete_person'       => 'Hapus orang',
     'delete_relationship' => 'Hapus hubungan',
 
+    'managed_by_another_team' => 'Dikelola oleh tim lain',
+    'propose_edit'            => 'Usulkan perubahan',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Nama',

@@ -64,6 +64,9 @@ return [
     'delete_child'                   => 'Desconectar criança',
     'delete_person'                  => 'Excluir pessoa',
     'delete_relationship'            => 'Excluir relacionamento',
+
+    'managed_by_another_team' => 'Gerenciado por outra equipe',
+    'propose_edit'            => 'Propor uma alteração',
     'id'                             => 'EU IA',
     'name'                           => 'Nome',
     'names'                          => 'Nomes',

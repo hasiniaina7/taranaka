@@ -75,6 +75,9 @@ return [
     'delete_person'       => 'Xóa người',
     'delete_relationship' => 'Xóa mối quan hệ',
 
+    'managed_by_another_team' => 'Được quản lý bởi nhóm khác',
+    'propose_edit'            => 'Đề xuất thay đổi',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Tên',
