@@ -7,6 +7,7 @@ use App\Livewire\Traits\TrimStringsAndConvertEmptyStringsToNull;
 use App\Models\Person;
 use App\Rules\DodValid;
 use App\Rules\YodValid;
+use App\Support\PersonPrivacy;
 use Carbon\Carbon;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -50,11 +51,15 @@ new class extends Component
 
         $validated = $this->validate();
 
+        $wasPubliclyVisible = PersonPrivacy::isPubliclyVisible($this->person);
+
         $this->person->update([
             'yod' => $this->yod ?? null,
             'dod' => $this->dod ?? null,
             'pod' => $this->pod ?? null,
         ]);
+
+        $this->person->refresh();
 
         // ------------------------------------------------------
         // update or create metadata
@@ -70,6 +75,10 @@ new class extends Component
         $this->dispatch('person_updated');
 
         $this->toast()->success(__('app.save'), __('app.saved'))->send();
+
+        if (! $wasPubliclyVisible && PersonPrivacy::isPubliclyVisible($this->person)) {
+            $this->toast()->info(__('person.profile_now_public'), __('person.now_public_deceased'))->send();
+        }
     }
 
     // ------------------------------------------------------------------------------

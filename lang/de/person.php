@@ -85,6 +85,11 @@ return [
     'explore_ancestors'    => 'Vorfahren erkunden',
     'explore_descendants'  => 'Nachkommen erkunden',
     'living'               => 'Lebend',
+    'privacy'              => 'Datenschutz',
+    'make_public'          => 'Dieses Profil öffentlich machen',
+    'make_public_hint'     => 'Wenn aktiviert, sind die nicht sensiblen Angaben dieser Person auch zu Lebzeiten für Besucher sichtbar.',
+    'now_public_deceased'  => 'Dieses Profil ist jetzt öffentlich — die Person ist als verstorben verzeichnet.',
+    'profile_now_public'   => 'Profil jetzt öffentlich',
 
     // Attributes
     'id'          => 'ID',

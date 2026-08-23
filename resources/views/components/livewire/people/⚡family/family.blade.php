@@ -39,6 +39,28 @@
                     </x-ts-dropdown>
                 </div>
             @endif
+
+            @cannot('update', $person)
+                @can('propose', App\Models\Contribution::class)
+                    <div class="max-w-min min-w-max flex-1 grow text-end">
+                        <x-ts-dropdown icon="tabler.message-2-share" position="bottom-end">
+                            <a href="{{ route('contributions.propose-child', $person) }}">
+                                <x-ts-dropdown.items>
+                                    <x-ts-icon icon="tabler.user-plus" class="mr-2 inline-block size-5" />
+                                    {{ __('contributions.propose_child') }}
+                                </x-ts-dropdown.items>
+                            </a>
+
+                            <a href="{{ route('contributions.propose-partner', $person) }}">
+                                <x-ts-dropdown.items>
+                                    <x-ts-icon icon="tabler.heart-plus" class="mr-2 inline-block size-5" />
+                                    {{ __('contributions.propose_partner') }}
+                                </x-ts-dropdown.items>
+                            </a>
+                        </x-ts-dropdown>
+                    </div>
+                @endcan
+            @endcannot
         </div>
     </div>
 

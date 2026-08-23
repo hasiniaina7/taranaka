@@ -90,6 +90,19 @@ Route::middleware([
     });
 
     // -----------------------------------------------------------------------------------
+    // contributions
+    // -----------------------------------------------------------------------------------
+    Route::livewire('people/{person}/propose', 'contributions::propose')->name('contributions.propose');
+    Route::livewire('people/{person}/propose-child', 'contributions::propose-child')->name('contributions.propose-child');
+    Route::livewire('people/{person}/propose-partner', 'contributions::propose-partner')->name('contributions.propose-partner');
+    Route::livewire('contributions', 'contributions::my')->name('contributions.my');
+
+    Route::middleware(App\Http\Middleware\IsModerator::class)->prefix('moderation')->group(function (): void {
+        Route::livewire('contributions', 'contributions::queue')->name('moderation.contributions');
+        Route::livewire('contributions/{contribution}', 'contributions::review')->name('contributions.review');
+    });
+
+    // -----------------------------------------------------------------------------------
     // gedcom
     // -----------------------------------------------------------------------------------
     Route::livewire('exportteam', 'gedcom::exportteam')->name('gedcom.exportteam');

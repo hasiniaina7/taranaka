@@ -85,6 +85,11 @@ return [
     'explore_ancestors'    => '探索祖先',
     'explore_descendants'  => '探索后代',
     'living'               => '在世',
+    'privacy'              => '隐私',
+    'make_public'          => '公开此档案',
+    'make_public_hint'     => '启用后，即使此人仍在世，其非敏感信息也会对访客可见。',
+    'now_public_deceased'  => '此档案现已公开——该人员已被记录为已故。',
+    'profile_now_public'   => '档案现已公开',
 
     // Attributes
     'id'          => 'ID',

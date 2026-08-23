@@ -85,6 +85,11 @@ return [
     'explore_ancestors'    => 'Voorouders verkennen',
     'explore_descendants'  => 'Nakomelingen verkennen',
     'living'               => 'Levend',
+    'privacy'              => 'Privacy',
+    'make_public'          => 'Dit profiel openbaar maken',
+    'make_public_hint'     => 'Indien ingeschakeld, is de niet-gevoelige informatie van deze persoon zichtbaar voor bezoekers, zelfs tijdens het leven.',
+    'now_public_deceased'  => 'Dit profiel is nu openbaar — de persoon staat geregistreerd als overleden.',
+    'profile_now_public'   => 'Profiel nu openbaar',
 
     // Attributes
     'id'          => 'ID',
