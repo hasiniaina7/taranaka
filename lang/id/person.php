@@ -89,6 +89,7 @@ return [
     'make_public'          => 'Jadikan profil ini publik',
     'make_public_hint'     => 'Jika diaktifkan, informasi non-sensitif orang ini terlihat oleh pengunjung, bahkan saat masih hidup.',
     'now_public_deceased'  => 'Profil ini sekarang publik — orang tersebut tercatat telah meninggal.',
+    'profile_now_public'   => 'Profil sekarang publik',
 
     // Attributes
     'id'          => 'ID',

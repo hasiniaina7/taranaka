@@ -90,6 +90,7 @@ return [
     'make_public'         => 'Make this profile public',
     'make_public_hint'    => 'When enabled, this person\'s non-sensitive information is visible to visitors, even while living.',
     'now_public_deceased' => 'This profile is now public — the person is recorded as deceased.',
+    'profile_now_public'  => 'Profile now public',
 
     // Attributes
     'id'          => 'ID',

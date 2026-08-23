@@ -89,6 +89,7 @@ return [
     'make_public'          => 'Công khai hồ sơ này',
     'make_public_hint'     => 'Khi bật, thông tin không nhạy cảm của người này sẽ hiển thị với khách truy cập, ngay cả khi còn sống.',
     'now_public_deceased'  => 'Hồ sơ này hiện đã công khai — người này được ghi nhận là đã qua đời.',
+    'profile_now_public'   => 'Hồ sơ hiện đã công khai',
 
     // Attributes
     'id'          => 'ID',
