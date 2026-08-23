@@ -75,6 +75,17 @@ return [
     'delete_person'       => 'Delete person',
     'delete_relationship' => 'Delete relationship',
 
+    'managed_by_another_team' => 'Managed by another team',
+    'propose_edit'            => 'Propose a change',
+    'profile_private'         => 'Private profile — limited information.',
+
+    'no_parents_known'     => 'No known parents.',
+    'no_partners_recorded' => 'No partner recorded.',
+    'no_children_recorded' => 'No children recorded.',
+    'explore_ancestors'    => 'Explore ancestors',
+    'explore_descendants'  => 'Explore descendants',
+    'living'                => 'Living',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Name',

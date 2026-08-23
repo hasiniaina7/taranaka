@@ -44,7 +44,7 @@ test('a user with the person:delete permission can delete a deletable person', f
 
     Livewire::test('people::profile', ['person' => $person])
         ->call('delete')
-        ->assertRedirect('/search');
+        ->assertRedirect(route('people.search', absolute: false));
 
     $this->assertSoftDeleted($person);
 });

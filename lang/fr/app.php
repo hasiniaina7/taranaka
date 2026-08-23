@@ -59,6 +59,7 @@ return [
     'clear'                     => 'Effacer',
     'create'                    => 'Créer',
     'created'                   => 'Créé',
+    'edit'                      => 'Modifier',
     'update'                    => 'Mettre à jour',
     'download'                  => 'Télécharger',
     'downloading'               => 'Le téléchargement est lancé.',

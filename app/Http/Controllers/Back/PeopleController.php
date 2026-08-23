@@ -99,6 +99,7 @@ final class PeopleController extends Controller
     public function editContact(Person $person): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('person:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.contact', ['person' => $person]);
     }
@@ -106,6 +107,7 @@ final class PeopleController extends Controller
     public function editDeath(Person $person): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('person:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.death', ['person' => $person]);
     }
@@ -113,6 +115,7 @@ final class PeopleController extends Controller
     public function editEvents(Person $person): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('person:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.events', ['person' => $person]);
     }
@@ -120,6 +123,7 @@ final class PeopleController extends Controller
     public function editFamily(Person $person): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('person:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.family', ['person' => $person]);
     }
@@ -127,6 +131,7 @@ final class PeopleController extends Controller
     public function editFiles(Person $person): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('person:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.files', ['person' => $person]);
     }
@@ -134,6 +139,7 @@ final class PeopleController extends Controller
     public function editPhotos(Person $person): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('person:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.photos', ['person' => $person]);
     }
@@ -141,6 +147,7 @@ final class PeopleController extends Controller
     public function editProfile(Person $person): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('person:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.profile', ['person' => $person]);
     }
@@ -148,6 +155,7 @@ final class PeopleController extends Controller
     public function editPartner(Person $person, Couple $couple): View
     {
         abort_unless((bool) auth()->user()?->hasPermission('couple:update'), 403, __('app.unauthorized_access'));
+        $this->authorize('update', $person);
 
         return view('back.people.edit.partner', ['person' => $person, 'couple' => $couple]);
     }

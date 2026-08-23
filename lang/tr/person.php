@@ -75,6 +75,17 @@ return [
     'delete_person'       => 'Kişiyi sil',
     'delete_relationship' => 'İlişkiyi sil',
 
+    'managed_by_another_team' => 'Başka bir ekip tarafından yönetiliyor',
+    'propose_edit'            => 'Değişiklik öner',
+    'profile_private'         => 'Gizli profil — sınırlı bilgi.',
+
+    'no_parents_known'     => 'Bilinen ebeveyn yok.',
+    'no_partners_recorded' => 'Kayıtlı partner yok.',
+    'no_children_recorded' => 'Kayıtlı çocuk yok.',
+    'explore_ancestors'    => 'Ataları keşfet',
+    'explore_descendants'  => 'Soyu keşfet',
+    'living'               => 'Yaşıyor',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Ad',

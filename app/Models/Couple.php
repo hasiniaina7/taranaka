@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Override;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
@@ -172,7 +174,17 @@ final class Couple extends Model
                 return;
             }
 
-            $builder->where('couples.team_id', $user->currentTeam?->id);
+            $currentTeam = $user->currentTeam;
+
+            if (! $currentTeam) {
+                return;
+            }
+
+            $builder->where(function (Builder $q) use ($currentTeam): void {
+                $q->where('couples.team_id', $currentTeam->id)
+                    ->orWhereIn('couples.person1_id', self::visiblePersonIdsSubquery($currentTeam->id))
+                    ->orWhereIn('couples.person2_id', self::visiblePersonIdsSubquery($currentTeam->id));
+            });
         });
     }
 
@@ -217,5 +229,17 @@ final class Couple extends Model
             'is_married' => 'boolean',
             'has_ended'  => 'boolean',
         ];
+    }
+
+    /**
+     * IDs of people visible to the given team: its own people plus anyone
+     * reachable one hop away via a couple or parent/child link (FR-003).
+     */
+    private static function visiblePersonIdsSubquery(int $teamId): QueryBuilder
+    {
+        return DB::table('people')
+            ->where('team_id', $teamId)
+            ->select('id')
+            ->union(Person::reachableFromTeamSubquery($teamId));
     }
 }

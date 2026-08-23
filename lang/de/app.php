@@ -65,6 +65,7 @@ return [
     'clear'   => 'Löschen',
     'create'  => 'Erstellen',
     'created' => 'Erstellt',
+    'edit'    => 'Bearbeiten',
     'update'  => 'Aktualisieren',
 
     'download'    => 'Herunterladen',

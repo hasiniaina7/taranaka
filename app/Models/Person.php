@@ -13,9 +13,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Korridor\LaravelHasManyMerged\HasManyMerged;
@@ -108,6 +111,51 @@ final class Person extends Model implements HasMedia
         'birth_formatted',
         'death_formatted',
     ];
+
+    /**
+     * Build a subquery of person IDs reachable, one hop away, from a person
+     * already owned by the given team — via a couple link or a parent/child
+     * link in either direction (FR-002/FR-003 of spec 002).
+     */
+    public static function reachableFromTeamSubquery(int $teamId): QueryBuilder
+    {
+        $ownTeam = fn (): QueryBuilder => DB::table('people')->where('team_id', $teamId);
+
+        return DB::table('couples')
+            ->join('people as partner', 'partner.id', '=', 'couples.person1_id')
+            ->where('partner.team_id', $teamId)
+            ->select('couples.person2_id as id')
+            ->union(
+                DB::table('couples')
+                    ->join('people as partner', 'partner.id', '=', 'couples.person2_id')
+                    ->where('partner.team_id', $teamId)
+                    ->select('couples.person1_id as id')
+            )
+            ->union(
+                DB::table('people')
+                    ->whereIn('father_id', $ownTeam()->select('id'))
+                    ->select('id')
+            )
+            ->union(
+                DB::table('people')
+                    ->whereIn('mother_id', $ownTeam()->select('id'))
+                    ->select('id')
+            )
+            ->union(
+                DB::table('people')
+                    ->whereIn('parents_id', $ownTeam()->select('id'))
+                    ->select('id')
+            )
+            ->union(
+                $ownTeam()->whereNotNull('father_id')->select('father_id as id')
+            )
+            ->union(
+                $ownTeam()->whereNotNull('mother_id')->select('mother_id as id')
+            )
+            ->union(
+                $ownTeam()->whereNotNull('parents_id')->select('parents_id as id')
+            );
+    }
 
     /* -------------------------------------------------------------------------------------------- */
     // Log activities
@@ -463,6 +511,15 @@ final class Person extends Model implements HasMedia
         return $this->hasManyMerged(Couple::class, ['person1_id', 'person2_id'])->with(['person1', 'person2']);
     }
 
+    /* returns ALL LINEAGES (n Lineage) this person is attached to */
+    /** @return BelongsToMany<Lineage, $this, LineageMembership, 'pivot'> */
+    public function lineages(): BelongsToMany
+    {
+        return $this->belongsToMany(Lineage::class, 'lineage_person')
+            ->using(LineageMembership::class)
+            ->withTimestamps();
+    }
+
     /* returns ALL METADATA (n PersonMetadata) related to the person */
     /** @return HasMany<PersonMetadata, $this> */
     public function metadata(): HasMany
@@ -703,7 +760,10 @@ final class Person extends Model implements HasMedia
             $currentTeam = $user->currentTeam;
 
             if ($currentTeam) {
-                $builder->where('people.team_id', $currentTeam->id);
+                $builder->where(function (Builder $q) use ($currentTeam): void {
+                    $q->where('people.team_id', $currentTeam->id)
+                        ->orWhereIn('people.id', self::reachableFromTeamSubquery($currentTeam->id));
+                });
             }
         });
 

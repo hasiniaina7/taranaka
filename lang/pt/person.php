@@ -64,6 +64,17 @@ return [
     'delete_child'                   => 'Desconectar criança',
     'delete_person'                  => 'Excluir pessoa',
     'delete_relationship'            => 'Excluir relacionamento',
+
+    'managed_by_another_team' => 'Gerenciado por outra equipe',
+    'propose_edit'            => 'Propor uma alteração',
+    'profile_private'         => 'Perfil privado — informações limitadas.',
+
+    'no_parents_known'     => 'Nenhum pai/mãe conhecido.',
+    'no_partners_recorded' => 'Nenhum parceiro registrado.',
+    'no_children_recorded' => 'Nenhum filho registrado.',
+    'explore_ancestors'    => 'Explorar ascendentes',
+    'explore_descendants'  => 'Explorar descendentes',
+    'living'               => 'Vivo',
     'id'                             => 'EU IA',
     'name'                           => 'Nome',
     'names'                          => 'Nomes',

@@ -65,6 +65,7 @@ return [
     'clear'   => 'Temizle',
     'create'  => 'Oluştur',
     'created' => 'Oluşturuldu',
+    'edit'    => 'Düzenle',
     'update'  => 'Güncelle',
 
     'download'    => 'İndir',

@@ -18,6 +18,7 @@
                 <livewire:people::partners :person="$person" />
                 <livewire:people::children :person="$person" />
                 <livewire:people::siblings :person="$person" />
+                <livewire:people::person-lineage-manager :person="$person" />
                 <livewire:people::files :person="$person" />
             </div>
 

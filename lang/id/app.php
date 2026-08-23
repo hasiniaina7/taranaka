@@ -65,6 +65,7 @@ return [
     'clear'   => 'Hapus',
     'create'  => 'Buat',
     'created' => 'Dibuat',
+    'edit'    => 'Edit',
     'update'  => 'Perbarui',
 
     'download'    => 'Unduh',

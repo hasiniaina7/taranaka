@@ -64,6 +64,17 @@ return [
     'delete_child'                   => 'Déconnecter l\'enfant',
     'delete_person'                  => 'Supprimer une personne',
     'delete_relationship'            => 'Supprimer la relation',
+
+    'managed_by_another_team' => 'Géré par une autre équipe',
+    'propose_edit'            => 'Proposer une modification',
+    'profile_private'         => 'Profil privé — informations limitées.',
+
+    'no_parents_known'     => 'Aucun parent connu.',
+    'no_partners_recorded' => 'Aucun partenaire enregistré.',
+    'no_children_recorded' => 'Aucun enfant enregistré.',
+    'explore_ancestors'    => 'Explorer les ascendants',
+    'explore_descendants'  => 'Explorer les descendants',
+    'living'               => 'Vivant',
     'id'                             => 'IDENTIFIANT',
     'name'                           => 'Nom',
     'names'                          => 'Noms',

@@ -65,6 +65,7 @@ return [
     'clear'   => 'Clear',
     'create'  => 'Create',
     'created' => 'Created',
+    'edit'    => 'Edit',
     'update'  => 'Update',
 
     'download'    => 'Download',

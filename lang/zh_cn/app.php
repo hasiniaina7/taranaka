@@ -65,6 +65,7 @@ return [
     'clear'   => '清除',
     'create'  => '创建',
     'created' => '已创建',
+    'edit'    => '编辑',
     'update'  => '更新',
 
     'download'    => '下载',

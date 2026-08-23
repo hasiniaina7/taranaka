@@ -75,6 +75,17 @@ return [
     'delete_person'       => 'Hapus orang',
     'delete_relationship' => 'Hapus hubungan',
 
+    'managed_by_another_team' => 'Dikelola oleh tim lain',
+    'propose_edit'            => 'Usulkan perubahan',
+    'profile_private'         => 'Profil pribadi — informasi terbatas.',
+
+    'no_parents_known'     => 'Tidak ada orang tua yang diketahui.',
+    'no_partners_recorded' => 'Tidak ada pasangan tercatat.',
+    'no_children_recorded' => 'Tidak ada anak tercatat.',
+    'explore_ancestors'    => 'Jelajahi leluhur',
+    'explore_descendants'  => 'Jelajahi keturunan',
+    'living'               => 'Hidup',
+
     // Attributes
     'id'          => 'ID',
     'name'        => 'Nama',

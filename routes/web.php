@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Front\AncestorsController;
+use App\Http\Controllers\Front\DescendantsController;
+use App\Http\Controllers\Front\SearchController;
 use Illuminate\Support\Facades\Route;
 
 // -----------------------------------------------------------------------------------
@@ -14,6 +17,21 @@ Route::controller(App\Http\Controllers\Front\PageController::class)->group(funct
     Route::get('about', 'about')->name('about');
     Route::get('help', 'help')->name('help');
 });
+
+// -----------------------------------------------------------------------------------
+// lineages (public)
+// -----------------------------------------------------------------------------------
+Route::livewire('lineages', 'lineages::directory')->name('lineages.index');
+Route::livewire('lineages/{lineage:slug}', 'lineages::show')->name('lineages.show');
+
+// -----------------------------------------------------------------------------------
+// person profile (public) — distinct `/p/` prefix so it never collides with the
+// authenticated `people/{person}` route (people.show)
+// -----------------------------------------------------------------------------------
+Route::livewire('p/{person}', 'people::public-profile')->name('public.people.show');
+Route::get('p/{person}/ancestors', AncestorsController::class)->name('front.people.ancestors');
+Route::get('p/{person}/descendants', [DescendantsController::class, 'show'])->name('front.people.descendants');
+Route::get('search', [SearchController::class, 'show'])->name('public.search');
 
 // -----------------------------------------------------------------------------------
 // backend routes
@@ -36,10 +54,17 @@ Route::middleware([
     });
 
     // -----------------------------------------------------------------------------------
+    // lineages (back-office management)
+    // -----------------------------------------------------------------------------------
+    Route::livewire('back/lineages', 'lineages::manage')->name('lineages.manage');
+    Route::livewire('back/lineages/create', 'lineages::form')->name('lineages.create');
+    Route::livewire('back/lineages/{lineage}/edit', 'lineages::form')->name('lineages.edit');
+
+    // -----------------------------------------------------------------------------------
     // people
     // -----------------------------------------------------------------------------------
     Route::controller(App\Http\Controllers\Back\PeopleController::class)->group(function (): void {
-        Route::get('search', 'search')->name('people.search');
+        Route::get('people/search', 'search')->name('people.search');
         Route::get('birthdays', 'birthdays')->name('people.birthdays');
 
         Route::get('people/add', 'add')->name('people.add');
