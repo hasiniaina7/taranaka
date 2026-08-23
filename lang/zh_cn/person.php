@@ -77,6 +77,14 @@ return [
 
     'managed_by_another_team' => '由另一个团队管理',
     'propose_edit'            => '提议修改',
+    'profile_private'         => '私密档案 — 信息有限。',
+
+    'no_parents_known'     => '没有已知的父母。',
+    'no_partners_recorded' => '没有登记的伴侣。',
+    'no_children_recorded' => '没有登记的子女。',
+    'explore_ancestors'    => '探索祖先',
+    'explore_descendants'  => '探索后代',
+    'living'               => '在世',
 
     // Attributes
     'id'          => 'ID',

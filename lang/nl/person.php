@@ -77,6 +77,14 @@ return [
 
     'managed_by_another_team' => 'Beheerd door een ander team',
     'propose_edit'            => 'Wijziging voorstellen',
+    'profile_private'         => 'Privéprofiel — beperkte informatie.',
+
+    'no_parents_known'     => 'Geen bekende ouders.',
+    'no_partners_recorded' => 'Geen partner geregistreerd.',
+    'no_children_recorded' => 'Geen kinderen geregistreerd.',
+    'explore_ancestors'    => 'Voorouders verkennen',
+    'explore_descendants'  => 'Nakomelingen verkennen',
+    'living'               => 'Levend',
 
     // Attributes
     'id'          => 'ID',

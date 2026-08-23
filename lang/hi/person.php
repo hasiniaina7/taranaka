@@ -67,6 +67,14 @@ return [
 
     'managed_by_another_team' => 'दूसरी टीम द्वारा प्रबंधित',
     'propose_edit'            => 'परिवर्तन प्रस्तावित करें',
+    'profile_private'         => 'निजी प्रोफ़ाइल — सीमित जानकारी।',
+
+    'no_parents_known'     => 'कोई ज्ञात माता-पिता नहीं।',
+    'no_partners_recorded' => 'कोई साथी दर्ज नहीं।',
+    'no_children_recorded' => 'कोई बच्चा दर्ज नहीं।',
+    'explore_ancestors'    => 'पूर्वजों का अन्वेषण करें',
+    'explore_descendants'  => 'वंशजों का अन्वेषण करें',
+    'living'               => 'जीवित',
     'id'                             => 'पहचान',
     'name'                           => 'नाम',
     'names'                          => 'नाम',

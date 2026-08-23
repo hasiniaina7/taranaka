@@ -77,6 +77,14 @@ return [
 
     'managed_by_another_team' => 'Được quản lý bởi nhóm khác',
     'propose_edit'            => 'Đề xuất thay đổi',
+    'profile_private'         => 'Hồ sơ riêng tư — thông tin hạn chế.',
+
+    'no_parents_known'     => 'Không rõ cha mẹ.',
+    'no_partners_recorded' => 'Không có bạn đời được ghi nhận.',
+    'no_children_recorded' => 'Không có con được ghi nhận.',
+    'explore_ancestors'    => 'Khám phá tổ tiên',
+    'explore_descendants'  => 'Khám phá hậu duệ',
+    'living'               => 'Còn sống',
 
     // Attributes
     'id'          => 'ID',

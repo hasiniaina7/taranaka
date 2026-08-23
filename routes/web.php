@@ -22,6 +22,12 @@ Route::livewire('lineages', 'lineages::directory')->name('lineages.index');
 Route::livewire('lineages/{lineage:slug}', 'lineages::show')->name('lineages.show');
 
 // -----------------------------------------------------------------------------------
+// person profile (public) — distinct `/p/` prefix so it never collides with the
+// authenticated `people/{person}` route (people.show)
+// -----------------------------------------------------------------------------------
+Route::livewire('p/{person}', 'people::public-profile')->name('public.people.show');
+
+// -----------------------------------------------------------------------------------
 // backend routes
 // -----------------------------------------------------------------------------------
 Route::middleware([
