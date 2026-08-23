@@ -1,4 +1,5 @@
 {
+    "name": "genealogy",
     "private": true,
     "type": "module",
     "scripts": {
