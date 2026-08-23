@@ -24,6 +24,10 @@
 
             <div class="flex min-w-[25rem] grow flex-col gap-5 overflow-x-auto md:max-w-max">
                 <livewire:people::edit.profile :person="$person" />
+
+                @can('togglePrivacy', $person)
+                    <livewire:people::edit.privacy :person="$person" />
+                @endcan
             </div>
         </div>
     </div>

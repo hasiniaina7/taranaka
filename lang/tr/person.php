@@ -85,6 +85,10 @@ return [
     'explore_ancestors'    => 'Ataları keşfet',
     'explore_descendants'  => 'Soyu keşfet',
     'living'               => 'Yaşıyor',
+    'privacy'              => 'Gizlilik',
+    'make_public'          => 'Bu profili herkese açık yap',
+    'make_public_hint'     => 'Etkinleştirildiğinde, bu kişinin hassas olmayan bilgileri hayatta olsa bile ziyaretçilere görünür.',
+    'now_public_deceased'  => 'Bu profil artık herkese açık — kişi vefat etmiş olarak kayıtlı.',
 
     // Attributes
     'id'          => 'ID',

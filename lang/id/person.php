@@ -85,6 +85,10 @@ return [
     'explore_ancestors'    => 'Jelajahi leluhur',
     'explore_descendants'  => 'Jelajahi keturunan',
     'living'               => 'Hidup',
+    'privacy'              => 'Privasi',
+    'make_public'          => 'Jadikan profil ini publik',
+    'make_public_hint'     => 'Jika diaktifkan, informasi non-sensitif orang ini terlihat oleh pengunjung, bahkan saat masih hidup.',
+    'now_public_deceased'  => 'Profil ini sekarang publik — orang tersebut tercatat telah meninggal.',
 
     // Attributes
     'id'          => 'ID',
