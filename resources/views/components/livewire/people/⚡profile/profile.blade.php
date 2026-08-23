@@ -12,12 +12,14 @@
             </div>
 
             @cannot('update', $person)
-                <div class="max-w-min min-w-max flex-1 grow text-end">
-                    <x-ts-button href="#" color="secondary" class="text-sm">
-                        <x-ts-icon icon="tabler.message-2-share" class="inline-block size-5" />
-                        {{ __('person.propose_edit') }}
-                    </x-ts-button>
-                </div>
+                @can('propose', App\Models\Contribution::class)
+                    <div class="max-w-min min-w-max flex-1 grow text-end">
+                        <x-ts-button href="{{ route('contributions.propose', $person) }}" color="secondary" class="text-sm">
+                            <x-ts-icon icon="tabler.message-2-share" class="inline-block size-5" />
+                            {{ __('person.propose_edit') }}
+                        </x-ts-button>
+                    </div>
+                @endcan
             @endcannot
 
             @can('update', $person)

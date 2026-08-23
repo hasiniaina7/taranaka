@@ -40,6 +40,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property string $language
  * @property string $timezone
  * @property bool $is_developer
+ * @property bool $is_moderator
  * @property Carbon|null $seen_at
  * @property Carbon|null $email_verified_at
  * @property Carbon|null $created_at
@@ -83,6 +84,7 @@ final class User extends Authenticatable
         'language',
         'timezone',
         'is_developer',
+        'is_moderator',
 
         'seen_at',
     ];
@@ -130,6 +132,7 @@ final class User extends Authenticatable
                 'language', 'timezone',
 
                 'is_developer',
+                'is_moderator',
             ])
             ->logOnlyDirty()
             ->dontLogEmptyChanges();
@@ -184,6 +187,15 @@ final class User extends Authenticatable
         return $this->is_developer === true;
     }
 
+    /**
+     * Check if user is a moderator, authorized to review and decide on
+     * pending contributions (spec 008).
+     */
+    public function isModerator(): bool
+    {
+        return $this->is_moderator === true;
+    }
+
     /* -------------------------------------------------------------------------------------------- */
     // Relations
     /* -------------------------------------------------------------------------------------------- */
@@ -235,6 +247,7 @@ final class User extends Authenticatable
             'email_verified_at'       => 'datetime',
             'password'                => 'hashed',
             'is_developer'            => 'boolean',
+            'is_moderator'            => 'boolean',
             'seen_at'                 => 'datetime',
             'two_factor_confirmed_at' => 'datetime',
         ];
