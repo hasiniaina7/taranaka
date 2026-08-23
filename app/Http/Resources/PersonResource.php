@@ -97,13 +97,16 @@ class PersonResource extends JsonResource
      */
     protected function references(mixed $people): array
     {
-        return collect($people)
+        $peopleCollection = $people instanceof Collection
+            ? $people
+            : collect(is_array($people) ? $people : [$people]);
+
+        return array_values($peopleCollection
             ->filter(fn (mixed $person): bool => $person instanceof Person)
             ->map(fn (Person $person): array => [
                 'id'   => $person->id,
                 'name' => $person->name,
             ])
-            ->values()
-            ->all();
+            ->all());
     }
 }

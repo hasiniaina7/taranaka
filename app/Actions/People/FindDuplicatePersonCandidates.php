@@ -69,13 +69,13 @@ class FindDuplicatePersonCandidates
 
         $accessibleIds = $this->accessibleCandidateIds($ranked);
 
-        return $ranked
+        return array_values($ranked
             ->map(fn (array $candidate): array => $this->project(
                 $candidate['person'],
                 $candidate['score'],
                 $accessibleIds,
             ))
-            ->all();
+            ->all());
     }
 
     /** @param array<int, string|null> $nameFields */
@@ -108,16 +108,16 @@ class FindDuplicatePersonCandidates
     }
 
     /**
-     * @param  Collection<int, array{person: Person}>  $ranked
+     * @param  Collection<int, array{person: Person, score: float, candidate_year: int|null, input_year: int|null}>  $ranked
      * @return list<int>
      */
     protected function accessibleCandidateIds(Collection $ranked): array
     {
-        return Person::query()
+        return array_values(Person::query()
             ->whereKey($ranked->pluck('person.id')->all())
             ->pluck('id')
             ->map(fn (int|string $id): int => (int) $id)
-            ->all();
+            ->all());
     }
 
     /**
@@ -129,10 +129,13 @@ class FindDuplicatePersonCandidates
         $private = ! PersonPrivacy::isPubliclyVisible($person);
 
         return [
-            'id'              => $person->id,
-            'name'            => $person->name,
-            'lifespan'        => $private ? null : $person->lifetime,
-            'lineages'        => $private ? [] : $person->lineages->pluck('name')->values()->all(),
+            'id'       => $person->id,
+            'name'     => $person->name,
+            'lifespan' => $private ? null : $person->lifetime,
+            'lineages' => $private ? [] : array_values($person->lineages
+                ->pluck('name')
+                ->map(fn (mixed $name): string => (string) $name)
+                ->all()),
             'private'         => $private,
             'score'           => $score,
             'percentage'      => (int) round($score * 100),

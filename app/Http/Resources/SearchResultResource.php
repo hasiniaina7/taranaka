@@ -22,7 +22,7 @@ class SearchResultResource extends JsonResource
     /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
-        /** @var array{people:LengthAwarePaginator, lineages:LengthAwarePaginator} $paginators */
+        /** @var array{people:LengthAwarePaginator<int, array<string, mixed>>, lineages:LengthAwarePaginator<int, array<string, mixed>>} $paginators */
         $paginators = $this->resource;
 
         return [
@@ -31,7 +31,10 @@ class SearchResultResource extends JsonResource
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * @param  LengthAwarePaginator<int, array<string, mixed>>  $paginator
+     * @return array<string, mixed>
+     */
     protected function pagination(LengthAwarePaginator $paginator): array
     {
         return [
