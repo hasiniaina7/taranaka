@@ -8,6 +8,14 @@
 
 **Input**: User description: "Modernize the public (non-admin) frontend, especially the multi-generation genealogy tree presentation, reusing the existing site theme. Stay on the current Laravel/Livewire stack; import a compatible, complete, modern graphics library for the tree rendering only — not the back-office/management screens."
 
+## Clarifications
+
+### Session 2026-08-23
+
+- Q: Dans l'arbre graphique, les couples (conjoints/partenaires) doivent-ils apparaître comme des paires reliées, ou seulement la ligne de filiation directe ? → A: Paires reliées — chaque personne et son/ses partenaire(s) apparaissent côte à côte, reliés par un trait d'union, enfants sous le couple (mode natif de family-chart, cohérent avec le modèle `Couple` déjà en base, remariages inclus).
+- Q: Les cartes de personne doivent-elles afficher la photo (quand elle existe), ou rester texte seul ? → A: Avec photo si disponible (Spatie MediaLibrary), silhouette par défaut sinon.
+- Q: Comment un visiteur ouvre-t-il la fiche d'une personne depuis un nœud, sans conflit avec le glisser du canvas ? → A: Clic simple (sans glissement) sur la carte — comportement natif de family-chart, pas de bouton dédié.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Explore a modern, interactive descendant tree (Priority: P1)
@@ -114,12 +122,23 @@ viewport horizontally.
 - **FR-002**: The visual style of tree nodes and the canvas (colors,
   typography, spacing, dark/light mode) MUST reuse the site's existing
   Tailwind/TallStackUI design tokens — no separate design system introduced.
+- **FR-009**: Couples MUST render as a connected pair (both partners side by
+  side, joined by a union line), with their children attached below the
+  couple — reflecting the existing `Couple` model, including a person shown
+  paired with more than one partner across remarriages where recorded.
+- **FR-010**: Each node MUST display the person's photo when one exists
+  (existing Spatie MediaLibrary attachment), falling back to a placeholder
+  silhouette when none is set.
+- **FR-011**: A single click/tap on a node card (not preceded by a drag
+  gesture) MUST navigate to that person's profile (spec 003); dragging the
+  canvas or a node MUST NOT trigger navigation.
 - **FR-003**: Progressive/lazy loading of additional generations on branch
   expansion (spec 004 FR-002, spec 005 equivalent) MUST be preserved
   unchanged in substance — only its visual presentation changes.
 - **FR-004**: Living-person nodes MUST continue to render with the existing
   privacy-limited treatment (spec 007), adapted visually to the new
-  renderer.
+  renderer — including suppressing the photo (FR-010) whenever spec 007
+  already withholds that person's identifying details.
 - **FR-005**: Every node MUST remain a link to that person's public profile
   (spec 003), unchanged.
 - **FR-006**: The tree MUST be usable via touch (pan, zoom) on mobile
@@ -136,10 +155,13 @@ viewport horizontally.
 ### Key Entities
 
 - **Person**: unchanged; this spec is a presentation-layer upgrade only.
+- **Couple**: unchanged; rendered visually as a paired node (FR-009) using
+  the existing `person1_id`/`person2_id` relationship, including a person
+  who appears in more than one recorded couple (remarriage).
 - **Tree node (view-model)**: not persisted — assembled at render time from
   the existing descendant/ancestor payloads already produced by specs
-  004/005 (name, lifespan, privacy flag, generation, parent/child
-  references).
+  004/005 (name, lifespan, photo URL, privacy flag, generation,
+  parent/child/partner references).
 
 ### Team/Lineage scope interaction *(Constitution Principle VI & VII)*
 
@@ -180,7 +202,10 @@ the `team` global scope or the recursive query engine.
 - **Empty state**: root person alone with the existing "no
   descendants/ancestors recorded" message.
 - **Living-person node**: existing privacy badge / reduced-detail styling,
-  ported to the new node renderer.
+  ported to the new node renderer, photo suppressed (FR-004/FR-010).
+- **Couple node**: two partner cards joined by a union line, children
+  attached below the pair (FR-009); a remarried person appears once per
+  recorded couple, each pairing rendered independently.
 - **Mobile/compact**: nodes may show a reduced card (avatar + name only)
   below a viewport-width threshold, with full detail available on tap —
   exact threshold decided during implementation.
