@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,6 +14,11 @@ use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 
 /**
+ * Represents a publicly discoverable family lineage and its person memberships.
+ *
+ * Search belongs on the model because callers rely on one consistently escaped
+ * name-matching contract across the directory and global search entry points.
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -21,7 +28,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property string $status
  * @property-read \Illuminate\Support\Collection<int, Person> $people
  */
-final class Lineage extends Model
+class Lineage extends Model
 {
     /** @use HasFactory<\Database\Factories\LineageFactory> */
     use HasFactory;
@@ -58,6 +65,21 @@ final class Lineage extends Model
         }
 
         return $slug;
+    }
+
+    /** @param Builder<self> $query */
+    #[Scope]
+    public function scopeSearch(Builder $query, string $searchString): void
+    {
+        $searchString = strip_tags(mb_trim($searchString));
+
+        if ($searchString === '' || $searchString === '%') {
+            return;
+        }
+
+        $escapedSearch = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $searchString);
+
+        $query->where('name', 'like', '%' . $escapedSearch . '%');
     }
 
     /* -------------------------------------------------------------------------------------------- */

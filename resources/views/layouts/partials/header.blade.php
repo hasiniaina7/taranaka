@@ -2,6 +2,8 @@
     {{-- menu --}}
     <livewire:livewire::navigation-menu />
 
+    <livewire:search-bar />
+
     {{-- breadcrumbs & date --}}
     <div class="flex bg-neutral-200 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-200">
         <div class="mx-auto flex-1 p-2" aria-label="Page Heading">

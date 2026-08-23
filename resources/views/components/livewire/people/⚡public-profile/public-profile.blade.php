@@ -51,12 +51,12 @@
                     </div>
 
                     <div class="mt-4 flex flex-wrap justify-center gap-2 md:justify-start">
-                        <x-ts-button href="/people/{{ $person->id }}/ancestors" color="secondary" class="text-sm">
+                        <x-ts-button href="{{ route('front.people.ancestors', $person) }}" color="secondary" class="text-sm">
                             <x-ts-icon icon="tabler.binary-tree" class="inline-block size-5 rotate-180" />
                             {{ __('person.explore_ancestors') }}
                         </x-ts-button>
 
-                        <x-ts-button href="/people/{{ $person->id }}/descendants" color="secondary" class="text-sm">
+                        <x-ts-button href="{{ route('front.people.descendants', $person) }}" color="secondary" class="text-sm">
                             <x-ts-icon icon="tabler.binary-tree" class="inline-block size-5" />
                             {{ __('person.explore_descendants') }}
                         </x-ts-button>
