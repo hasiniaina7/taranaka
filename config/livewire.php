@@ -39,6 +39,7 @@ return [
         'developer' => resource_path('views/components/livewire/developer'),
         'gedcom'    => resource_path('views/components/livewire/gedcom'),
         'people'    => resource_path('views/components/livewire/people'),
+        'lineages'  => resource_path('views/components/livewire/lineages'),
     ],
 
     /*

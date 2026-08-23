@@ -201,6 +201,20 @@
                     <td class="border-r-2 pr-2">{{ __('person.summary') }}</td>
                     <td class="max-w-sm pl-2 wrap-break-word whitespace-pre-line">{{ $person->summary }}</td>
                 </tr>
+
+                <tr class="align-top">
+                    <td class="border-r-2 pr-2">{{ __('lineage.lineages') }}</td>
+                    <td class="max-w-sm pl-2 wrap-break-word">
+                        @forelse ($person->lineages as $lineage)
+                            <a
+                                href="{{ route('lineages.show', $lineage) }}"
+                                class="text-indigo-600 hover:text-yellow-500"
+                            >{{ $lineage->name }}</a>{{ ! $loop->last ? ', ' : '' }}
+                        @empty
+                            &nbsp;
+                        @endforelse
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

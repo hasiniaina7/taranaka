@@ -65,6 +65,7 @@ return [
     'clear'   => 'Xóa',
     'create'  => 'Tạo',
     'created' => 'Đã tạo',
+    'edit'    => 'Chỉnh sửa',
     'update'  => 'Cập nhật',
 
     'download'    => 'Tải xuống',

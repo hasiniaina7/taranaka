@@ -65,6 +65,7 @@ return [
     'clear'   => 'Wissen',
     'create'  => 'Aanmaken',
     'created' => 'Aangemaakt',
+    'edit'    => 'Bewerken',
     'update'  => 'Bijwerken',
 
     'download'    => 'Download',

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -461,6 +462,15 @@ final class Person extends Model implements HasMedia
     public function couples(): HasManyMerged
     {
         return $this->hasManyMerged(Couple::class, ['person1_id', 'person2_id'])->with(['person1', 'person2']);
+    }
+
+    /* returns ALL LINEAGES (n Lineage) this person is attached to */
+    /** @return BelongsToMany<Lineage, $this, LineageMembership, 'pivot'> */
+    public function lineages(): BelongsToMany
+    {
+        return $this->belongsToMany(Lineage::class, 'lineage_person')
+            ->using(LineageMembership::class)
+            ->withTimestamps();
     }
 
     /* returns ALL METADATA (n PersonMetadata) related to the person */

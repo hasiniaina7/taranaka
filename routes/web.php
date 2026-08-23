@@ -16,6 +16,12 @@ Route::controller(App\Http\Controllers\Front\PageController::class)->group(funct
 });
 
 // -----------------------------------------------------------------------------------
+// lineages (public)
+// -----------------------------------------------------------------------------------
+Route::livewire('lineages', 'lineages::directory')->name('lineages.index');
+Route::livewire('lineages/{lineage:slug}', 'lineages::show')->name('lineages.show');
+
+// -----------------------------------------------------------------------------------
 // backend routes
 // -----------------------------------------------------------------------------------
 Route::middleware([
@@ -34,6 +40,13 @@ Route::middleware([
     Route::controller(App\Http\Controllers\Back\TeamController::class)->group(function (): void {
         Route::put('/teams/{team}/transfer-ownership', 'transferOwnership')->name('teams.transfer-ownership');
     });
+
+    // -----------------------------------------------------------------------------------
+    // lineages (back-office management)
+    // -----------------------------------------------------------------------------------
+    Route::livewire('back/lineages', 'lineages::manage')->name('lineages.manage');
+    Route::livewire('back/lineages/create', 'lineages::form')->name('lineages.create');
+    Route::livewire('back/lineages/{lineage}/edit', 'lineages::form')->name('lineages.edit');
 
     // -----------------------------------------------------------------------------------
     // people
