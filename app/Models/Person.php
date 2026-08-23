@@ -112,6 +112,51 @@ final class Person extends Model implements HasMedia
         'death_formatted',
     ];
 
+    /**
+     * Build a subquery of person IDs reachable, one hop away, from a person
+     * already owned by the given team — via a couple link or a parent/child
+     * link in either direction (FR-002/FR-003 of spec 002).
+     */
+    public static function reachableFromTeamSubquery(int $teamId): QueryBuilder
+    {
+        $ownTeam = fn (): QueryBuilder => DB::table('people')->where('team_id', $teamId);
+
+        return DB::table('couples')
+            ->join('people as partner', 'partner.id', '=', 'couples.person1_id')
+            ->where('partner.team_id', $teamId)
+            ->select('couples.person2_id as id')
+            ->union(
+                DB::table('couples')
+                    ->join('people as partner', 'partner.id', '=', 'couples.person2_id')
+                    ->where('partner.team_id', $teamId)
+                    ->select('couples.person1_id as id')
+            )
+            ->union(
+                DB::table('people')
+                    ->whereIn('father_id', $ownTeam()->select('id'))
+                    ->select('id')
+            )
+            ->union(
+                DB::table('people')
+                    ->whereIn('mother_id', $ownTeam()->select('id'))
+                    ->select('id')
+            )
+            ->union(
+                DB::table('people')
+                    ->whereIn('parents_id', $ownTeam()->select('id'))
+                    ->select('id')
+            )
+            ->union(
+                $ownTeam()->whereNotNull('father_id')->select('father_id as id')
+            )
+            ->union(
+                $ownTeam()->whereNotNull('mother_id')->select('mother_id as id')
+            )
+            ->union(
+                $ownTeam()->whereNotNull('parents_id')->select('parents_id as id')
+            );
+    }
+
     /* -------------------------------------------------------------------------------------------- */
     // Log activities
     /* -------------------------------------------------------------------------------------------- */
@@ -696,51 +741,6 @@ final class Person extends Model implements HasMedia
             ->filter(fn ($event) => $event['sort_date'] !== null)
             ->sortBy('sort_date')
             ->values();
-    }
-
-    /**
-     * Build a subquery of person IDs reachable, one hop away, from a person
-     * already owned by the given team — via a couple link or a parent/child
-     * link in either direction (FR-002/FR-003 of spec 002).
-     */
-    public static function reachableFromTeamSubquery(int $teamId): QueryBuilder
-    {
-        $ownTeam = fn (): QueryBuilder => DB::table('people')->where('team_id', $teamId);
-
-        return DB::table('couples')
-            ->join('people as partner', 'partner.id', '=', 'couples.person1_id')
-            ->where('partner.team_id', $teamId)
-            ->select('couples.person2_id as id')
-            ->union(
-                DB::table('couples')
-                    ->join('people as partner', 'partner.id', '=', 'couples.person2_id')
-                    ->where('partner.team_id', $teamId)
-                    ->select('couples.person1_id as id')
-            )
-            ->union(
-                DB::table('people')
-                    ->whereIn('father_id', $ownTeam()->select('id'))
-                    ->select('id')
-            )
-            ->union(
-                DB::table('people')
-                    ->whereIn('mother_id', $ownTeam()->select('id'))
-                    ->select('id')
-            )
-            ->union(
-                DB::table('people')
-                    ->whereIn('parents_id', $ownTeam()->select('id'))
-                    ->select('id')
-            )
-            ->union(
-                $ownTeam()->whereNotNull('father_id')->select('father_id as id')
-            )
-            ->union(
-                $ownTeam()->whereNotNull('mother_id')->select('mother_id as id')
-            )
-            ->union(
-                $ownTeam()->whereNotNull('parents_id')->select('parents_id as id')
-            );
     }
 
     /* -------------------------------------------------------------------------------------------- */

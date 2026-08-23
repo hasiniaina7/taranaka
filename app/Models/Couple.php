@@ -150,18 +150,6 @@ final class Couple extends Model
         return $this->belongsTo(Team::class);
     }
 
-    /**
-     * IDs of people visible to the given team: its own people plus anyone
-     * reachable one hop away via a couple or parent/child link (FR-003).
-     */
-    private static function visiblePersonIdsSubquery(int $teamId): QueryBuilder
-    {
-        return DB::table('people')
-            ->where('team_id', $teamId)
-            ->select('id')
-            ->union(Person::reachableFromTeamSubquery($teamId));
-    }
-
     /* -------------------------------------------------------------------------------------------- */
     // Global Scopes
     /* -------------------------------------------------------------------------------------------- */
@@ -241,5 +229,17 @@ final class Couple extends Model
             'is_married' => 'boolean',
             'has_ended'  => 'boolean',
         ];
+    }
+
+    /**
+     * IDs of people visible to the given team: its own people plus anyone
+     * reachable one hop away via a couple or parent/child link (FR-003).
+     */
+    private static function visiblePersonIdsSubquery(int $teamId): QueryBuilder
+    {
+        return DB::table('people')
+            ->where('team_id', $teamId)
+            ->select('id')
+            ->union(Person::reachableFromTeamSubquery($teamId));
     }
 }
