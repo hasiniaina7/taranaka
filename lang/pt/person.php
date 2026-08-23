@@ -181,4 +181,14 @@ return [
     'similar_persons'      => 'Pessoas existentes semelhantes',
     'no_similar_persons'   => 'Ainda não foram encontradas pessoas semelhantes — digite alguns nomes e clique no botão de pesquisa.',
     'similar_persons_hint' => 'Para evitar adicionar uma pessoa mais de uma vez, pessoas existentes semelhantes são mostradas aqui depois que você digita um primeiro nome, sobrenome, nome de nascimento ou apelido e clica no botão de pesquisa.',
+
+    'duplicate_warning_title'           => 'Talvez já exista uma pessoa semelhante',
+    'duplicate_warning_intro'           => 'Revise estas correspondências antes de criar outro registro.',
+    'duplicate_high_confidence'         => 'Correspondência provável',
+    'duplicate_low_confidence'          => 'Correspondência de baixa confiança',
+    'duplicate_similarity'              => 'Semelhança',
+    'duplicate_private_profile'         => 'Perfil privado — os dados pessoais estão ocultos.',
+    'duplicate_same_person'             => 'É a mesma pessoa → usar o registro existente',
+    'duplicate_distinct_people'         => 'São pessoas diferentes → continuar',
+    'duplicate_acknowledgment_required' => 'Revise a correspondência provável e confirme que são pessoas diferentes antes de salvar.',
 ];

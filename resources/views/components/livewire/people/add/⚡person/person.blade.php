@@ -23,12 +23,10 @@
             </form>
         </div>
 
-        <div class="flex grow flex-col md:max-w-max">
-            @include('components.livewire.people.partials.person-similar')
-
-            @if (auth()->user()->currentTeam->personal_team)
+        @if (auth()->user()->currentTeam->personal_team)
+            <div class="flex grow flex-col md:max-w-max">
                 @include('components.livewire.people.partials.caution-personal-team')
-            @endif
-        </div>
+            </div>
+        @endif
     </div>
 </div>

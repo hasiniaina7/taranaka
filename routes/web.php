@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Front\AncestorsController;
 use App\Http\Controllers\Front\DescendantsController;
 use App\Http\Controllers\Front\SearchController;
+use App\Livewire\Developer\ApiDocsPage;
 use Illuminate\Support\Facades\Route;
 
 // -----------------------------------------------------------------------------------
@@ -112,6 +113,7 @@ Route::middleware([
     // developer
     // -----------------------------------------------------------------------------------
     Route::middleware(App\Http\Middleware\IsDeveloper::class)->prefix('developer')->as('developer.')->group(function (): void {
+        Route::livewire('api-docs', ApiDocsPage::class)->name('api-docs');
         Route::livewire('teams', 'developer::teams')->name('teams');
         Route::livewire('people', 'developer::people')->name('people');
 

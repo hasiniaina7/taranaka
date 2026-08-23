@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Support;
 
 use App\Models\Person;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Single, reusable public-visibility rule for a Person (spec 007), consumed
  * by every public surface (specs 003/004/005/006) instead of each feature
  * reimplementing its own living/private check.
  */
-final class PersonPrivacy
+class PersonPrivacy
 {
     public static function isLiving(Person $person): bool
     {
@@ -21,6 +22,23 @@ final class PersonPrivacy
     public static function isPubliclyVisible(Person $person): bool
     {
         return ! self::isLiving($person) || (bool) $person->is_publicly_visible;
+    }
+
+    /**
+     * Apply the public visibility rule before pagination so hidden lineage members
+     * cannot affect response size or force an unbounded in-memory filter.
+     *
+     * @param  Builder<Person>  $query
+     * @return Builder<Person>
+     */
+    public static function publiclyVisibleQuery(Builder $query): Builder
+    {
+        return $query->where(function (Builder $visibilityQuery): void {
+            $visibilityQuery
+                ->whereNotNull('dod')
+                ->orWhereNotNull('yod')
+                ->orWhere('is_publicly_visible', true);
+        });
     }
 
     /**

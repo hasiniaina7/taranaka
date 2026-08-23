@@ -66,6 +66,12 @@
                 {{-- Developer Section --}}
                 <x-hr.narrow />
                 <x-nav-link-responsive
+                    href="{{ route('developer.api-docs') }}"
+                    :active="request()->routeIs('developer.api-docs')"
+                >
+                    API v1
+                </x-nav-link-responsive>
+                <x-nav-link-responsive
                     href="{{ route('developer.teams') }}"
                     :active="request()->routeIs('developer.teams')"
                 >

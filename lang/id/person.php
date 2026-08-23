@@ -198,4 +198,14 @@ return [
     'similar_persons'      => 'Orang yang mirip yang sudah ada',
     'no_similar_persons'   => 'Belum ada orang serupa ditemukan — masukkan beberapa nama dan klik tombol pencarian.',
     'similar_persons_hint' => 'Untuk menghindari menambahkan seseorang lebih dari sekali, orang yang sudah ada dan mirip akan ditampilkan di sini setelah Anda mengetik nama depan, nama keluarga, nama lahir, atau nama panggilan dan mengklik tombol pencarian.',
+
+    'duplicate_warning_title'           => 'Orang serupa mungkin sudah ada',
+    'duplicate_warning_intro'           => 'Tinjau kecocokan ini sebelum membuat data baru.',
+    'duplicate_high_confidence'         => 'Kemungkinan cocok',
+    'duplicate_low_confidence'          => 'Kecocokan berkeyakinan rendah',
+    'duplicate_similarity'              => 'Kemiripan',
+    'duplicate_private_profile'         => 'Profil pribadi — informasi pribadi disembunyikan.',
+    'duplicate_same_person'             => 'Ini orang yang sama → gunakan data yang ada',
+    'duplicate_distinct_people'         => 'Mereka orang yang berbeda → lanjutkan',
+    'duplicate_acknowledgment_required' => 'Tinjau kemungkinan kecocokan dan konfirmasikan bahwa mereka orang yang berbeda sebelum menyimpan.',
 ];

@@ -179,4 +179,15 @@ return [
     'search_similar'       => 'Buscar personas similares',
     'similar_persons'      => 'Personas similares existentes',
     'no_similar_persons'   => 'Aún no se encontraron personas similares — ingrese algunos nombres y haga clic en el botón de búsqueda.',
-    'similar_persons_hint' => 'Para evitar añadir una persona más de una vez, aquí se muestran personas existentes similares después de escribir un nombre, apellido, apellido de nacimiento o apodo y hacer clic en el botón de búsqueda.', ];
+    'similar_persons_hint' => 'Para evitar añadir una persona más de una vez, aquí se muestran personas existentes similares después de escribir un nombre, apellido, apellido de nacimiento o apodo y hacer clic en el botón de búsqueda.',
+
+    'duplicate_warning_title'           => 'Puede que ya exista una persona similar',
+    'duplicate_warning_intro'           => 'Revisa estas coincidencias antes de crear otro registro.',
+    'duplicate_high_confidence'         => 'Coincidencia probable',
+    'duplicate_low_confidence'          => 'Coincidencia de baja confianza',
+    'duplicate_similarity'              => 'Similitud',
+    'duplicate_private_profile'         => 'Perfil privado — los datos personales están ocultos.',
+    'duplicate_same_person'             => 'Es la misma persona → usar el registro existente',
+    'duplicate_distinct_people'         => 'Son personas distintas → continuar',
+    'duplicate_acknowledgment_required' => 'Revisa la coincidencia probable y confirma que son personas distintas antes de guardar.',
+];
