@@ -39,6 +39,10 @@ a person with a typical family size (≤10 children, ≤5 partners).
 `people/{person}/show` route/controller as-is (that route assumes an
 authenticated, team-scoped viewer) — needs its own guest-safe read path
 that applies privacy filtering server-side, not just hides fields with CSS.
+MUST NOT reuse the existing route's URI (`people/{person}`) either, even
+under a different route name — Laravel resolves duplicate URI+method
+routes by registration order, so the new public route lives at `/p/{person}`
+instead.
 
 **Scale/Scope**: One new public route, one new Livewire component tree, one
 shared privacy-filter concern (minimal version here, formalized in 007).
@@ -76,7 +80,7 @@ specs/003-person-profile/
 ```text
 app/
 ├── Http/Controllers/Front/
-│   └── PersonProfileController.php   # NEW — GET /people/{person}, guest-safe
+│   └── PersonProfileController.php   # NEW — GET /p/{person}, guest-safe
 ├── Livewire/People/
 │   ├── PublicProfile.php + blade     # NEW — PersonProfile component (header, lineages, family panel, quick actions)
 ├── Support/
@@ -85,7 +89,7 @@ app/
 │   └── PrivacyBanner.php + blade     # NEW — shared component (also consumed by specs 004/005/006/007)
 
 routes/
-├── web.php   # add `Route::get('people/{person}', [PersonProfileController::class, 'show'])->name('public.people.show')` OUTSIDE the auth:sanctum group
+├── web.php   # add `Route::get('p/{person}', [PersonProfileController::class, 'show'])->name('public.people.show')` OUTSIDE the auth:sanctum group — distinct URI from `people/{person}`, not just a distinct name
 
 tests/Feature/PersonProfile/
 ├── GuestCanViewDeceasedPersonProfileTest.php

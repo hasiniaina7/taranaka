@@ -16,6 +16,27 @@
 - **Action**: none needed on the query itself; documented here so the
   implementation phase doesn't waste effort re-deriving this.
 
+## Decision: public route lives at `/p/{person}/descendants`, not `/people/{person}/descendants`
+
+- **Decision**: The new public route uses the `/p/` prefix established by
+  spec 003 (`/p/{person}`), giving `GET /p/{person}/descendants`, instead of
+  reusing the literal `people/{person}/descendants` path.
+- **Rationale**: `routes/web.php` already registers
+  `Route::get('people/{person}/descendants', 'descendants')->name('people.descendants')`
+  inside the `auth:sanctum` group. Laravel resolves a duplicate URI+method
+  pair by registration order, not by route name — adding a second route at
+  the exact same `people/{person}/descendants` path (even named
+  differently, e.g. `front.people.descendants`) would leave one of the two
+  permanently unreachable, silently breaking either the guest explorer or
+  the existing authenticated one depending on registration order. Sharing
+  the `/p/` prefix with spec 003 also keeps all public person-scoped routes
+  under one predictable namespace.
+- **Alternatives considered**: Registering the public route with a
+  different *name* but the same URI — rejected, doesn't avoid the
+  collision (Laravel routes by URI+method, not by name). Removing/renaming
+  the existing authenticated route — rejected, out of scope and would break
+  existing authenticated-user bookmarks/links for no benefit.
+
 ## Decision: UI-level progressive reveal, not server-side lazy branch loading
 
 - **Decision**: Fetch the full depth-bounded descendant set in one request

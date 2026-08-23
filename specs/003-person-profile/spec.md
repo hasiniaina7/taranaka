@@ -148,10 +148,14 @@ absence of a team scope is not, by itself, a privacy control.
 
 ### Routes / Pages
 
-- `GET /people/{person}` — new **public** route (no `auth:sanctum` middleware),
-  distinct from the existing authenticated `people/{person}/show` route used
-  by contributors today. Both may ultimately resolve to the same underlying
-  data, but the public route MUST NOT require authentication.
+- `GET /p/{person}` — new **public** route (no `auth:sanctum` middleware),
+  under a distinct `/p/` prefix so its URI never collides with the existing
+  authenticated `people/{person}` route (named `people.show`) — Laravel
+  resolves duplicate URI+method routes by registration order, so reusing the
+  exact same `people/{person}` path (even under a different route *name*)
+  would make one of the two routes permanently unreachable. Both routes may
+  ultimately resolve to the same underlying data, but the public route MUST
+  NOT require authentication and MUST live at its own URI.
 
 ### Livewire Components
 

@@ -39,6 +39,7 @@ description: "Task list for Read-Only API Layer (010-api-layer)"
 
 **⚠️ CRITICAL**: No user story controller/route work can begin until this phase is complete.
 
+- [ ] T003a Verify prerequisites before any Resource is written: confirm `app/Support/PersonPrivacy.php` (spec 003, extended by spec 007), `app/Models/Lineage.php` + `Lineage::scopeSearch()` (specs 001/006), and `Person::scopeSearch()` (spec 006) all exist and are implemented (not just specced) in the codebase. If any is missing, STOP — do not inline a substitute privacy/search/traversal implementation in this feature's Resources/controllers as a stopgap (violates FR-006/Principle VI); implement the missing prerequisite spec first, or explicitly pause 010 until it lands.
 - [ ] T004 [P] Create `PersonResource` in `app/Http/Resources/PersonResource.php`, wrapping `PersonPrivacy::publicFields($this->resource)` (spec 003/007) verbatim — no new field logic, no new privacy branching
 - [ ] T005 [P] Create `LineageResource` in `app/Http/Resources/LineageResource.php` per data-model.md's shape (`id`, `name`, `slug`, `description`, `member_count`)
 - [ ] T006 Create `SearchResultResource` in `app/Http/Resources/SearchResultResource.php`, wrapping paginated `people`/`lineages` collections through `PersonResource`/`LineageResource` per data-model.md (depends on T004, T005)

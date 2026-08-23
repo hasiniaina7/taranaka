@@ -155,6 +155,19 @@ data. Direct edit permission (`team_id` ownership) is unchanged by this
 spec; what changes is that lack of direct permission now has a legitimate
 path forward (propose) instead of being a dead end.
 
+Because `Person`/`Couple` carry a global `team` Eloquent scope (per the 000
+audit) that filters queries to the *current user's* team, resolving a
+Contribution's `target` — both when the proposal is created (FR-001, a
+contributor proposing a change to someone outside their team) and when a
+moderator loads it for review (`ModerationQueue`/`ContributionReview`) —
+MUST explicitly bypass that scope (e.g.
+`Person::withoutGlobalScope('team')->findOrFail($id)`). Without this, the
+target silently fails to resolve (404/empty) for exactly the cross-team
+case this spec exists to serve. This bypass applies only to *resolving*
+the target for display/proposal purposes — it grants no additional
+*write* permission; accepting a contribution still goes through the
+target's normal `save()`/authorization path (see Contribution lifecycle).
+
 ## UI & Interface Requirements *(mandatory)*
 
 ### Routes / Pages

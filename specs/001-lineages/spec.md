@@ -122,8 +122,15 @@ attached to it (per User Story 2) appears in the member list.
   more people attached to it.
 - **FR-008**: System MUST display, on a person's profile, the full list of
   lineages that person is attached to.
-- **FR-009**: System MUST display, on a lineage's page, the full list of
-  people attached to that lineage.
+- **FR-009**: System MUST display, on a lineage's page, the list of people
+  attached to that lineage. Because this page is public (guest-accessible,
+  see UI & Interface Requirements), the list MUST be privacy-filtered
+  exactly as a guest-visible person listing would be elsewhere (see spec
+  003/007's `PersonPrivacy` rule): a living person who has not opted in to
+  public visibility MUST be excluded from this list entirely (not shown
+  with redacted fields — omitted as a row), while a deceased or
+  opted-in-living person appears normally. This spec MUST NOT implement its
+  own privacy logic — it calls `PersonPrivacy::isPubliclyVisible()`.
 - **FR-010**: Attaching an already-attached person to the same lineage MUST be
   a no-op (idempotent), not an error and not a duplicate row.
 
@@ -169,8 +176,10 @@ continues, for now, to answer "who is allowed to edit this person." Spec
 - `LineageDirectory` — public list, TallStackUI table/grid, paginated, with a
   name filter input.
 - `LineageShow` — public lineage page: header (name, description, cover),
-  member list (name, lifespan, link to profile), empty state when zero
-  members ("Aucune personne rattachée pour l'instant").
+  member list (name, lifespan, link to profile) filtered through
+  `PersonPrivacy::isPubliclyVisible()` (FR-009 — living, non-opted-in people
+  are omitted from this list, not shown redacted), empty state when zero
+  visible members ("Aucune personne rattachée pour l'instant").
 - `PersonLineageManager` — embedded widget on the person edit screen: an
   autocomplete/multi-select to attach existing lineages, and a chip/tag list
   of currently attached lineages each with a "detach" (×) action that opens a
@@ -212,3 +221,8 @@ continues, for now, to answer "who is allowed to edit this person." Spec
   designated founder.
 - Only contributors and above (per existing role system) can create lineages
   or attach/detach people; visitors can only browse (User Story 3).
+- FR-009's privacy filtering depends on `app/Support/PersonPrivacy.php`
+  (spec 003, extended by spec 007). If this spec is implemented before spec
+  003 lands, `LineageShow`'s member list MUST use a temporary equivalent
+  check (`! $person->isDeceased()`) rather than shipping unfiltered — never
+  ship the public member list without a living-person filter of some form.

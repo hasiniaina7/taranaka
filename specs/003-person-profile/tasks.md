@@ -32,7 +32,7 @@ Single Laravel monolith app. Paths below are exactly as named in plan.md's Proje
 - [ ] T002 [P] Create `app/Support/PersonPrivacy.php` via `vendor/bin/sail artisan make:class Support/PersonPrivacy --no-interaction`
 - [ ] T003 [P] Create `app/View/Components/PrivacyBanner.php` and its Blade view via `vendor/bin/sail artisan make:component PrivacyBanner --no-interaction`
 - [ ] T004 [P] Create `app/Livewire/People/PublicProfile.php` Livewire component and its Blade view via `vendor/bin/sail artisan make:livewire People/PublicProfile --no-interaction`
-- [ ] T005 Add the public route in `routes/web.php`: `Route::get('people/{person}', [App\Http\Controllers\Front\PersonProfileController::class, 'show'])->name('public.people.show')`, placed in the ungated "frontend routes" section (outside the `auth:sanctum` group), distinct from the existing `people.show` route inside that group
+- [ ] T005 Add the public route in `routes/web.php`: `Route::get('p/{person}', [App\Http\Controllers\Front\PersonProfileController::class, 'show'])->name('public.people.show')`, placed in the ungated "frontend routes" section (outside the `auth:sanctum` group) — uses the distinct `/p/` URI prefix, NOT `people/{person}`, since that exact URI is already claimed by the existing authenticated `people.show` route and Laravel would only serve whichever route registers first
 
 **Checkpoint**: Scaffolding exists for all new classes/files; nothing wired up yet.
 

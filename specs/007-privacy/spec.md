@@ -136,6 +136,23 @@ previously private, then verify their profile becomes publicly visible
   time; auditability of opt-in/opt-out changes is expected to flow through
   the existing Activitylog mechanism already attached to `Person`.
 
+### Team/Lineage scope interaction *(Constitution Principle VII)*
+
+Privacy visibility is orthogonal to `team_id`/`Lineage` membership: whether
+a person is *reachable* by a viewer (team scope, spec 002; lineage
+membership, spec 001) is decided before this rule ever runs, and whether a
+reachable person's *sensitive fields* are shown is decided entirely by
+`PersonPrivacy::isPubliclyVisible()` / `isLiving()` — never by which team
+or lineage the viewer belongs to. A living, non-opted-in person is withheld
+identically for a guest, a contributor in a different team, and a
+contributor in the person's own team viewing the public surface (specs
+003/004/005/006); team/lineage membership grants no bypass of this rule.
+The one exception is the existing authenticated `people.show`-family
+routes (FR-008), which remain unaffected by this spec and continue to show
+full data to a contributor with edit rights, per today's existing
+team-scoped authorization — that path is untouched, not a privacy bypass
+introduced here.
+
 ## UI & Interface Requirements *(mandatory)*
 
 ### Routes / Pages
@@ -146,10 +163,16 @@ previously private, then verify their profile becomes publicly visible
 
 ### Livewire Components
 
-- `PrivacyBanner` — the single shared component (introduced here, reused by
-  specs 003/004/005/006 rather than each reimplementing it) rendering the
-  "Profil privé — informations limitées" indicator wherever a living,
-  non-opted-in person is shown publicly.
+- `PrivacyBanner` — **already exists** as a stateless Blade component
+  (`app/View/Components/PrivacyBanner.php`, spec 003), not introduced by
+  this spec. It renders its "Profil privé — informations limitées"
+  indicator purely from a boolean `shown` prop, fed by
+  `PersonPrivacy::isPubliclyVisible()`. This spec extends
+  `isPubliclyVisible()`'s underlying rule (FR-002/FR-003) but MUST NOT
+  recreate `PrivacyBanner` as a new component (Livewire or otherwise) —
+  the existing Blade component's call sites in specs 003/004/005/006
+  automatically pick up the extended rule with zero changes to
+  `PrivacyBanner` itself.
 - `PrivacyToggle` — new control on the person edit screen (`edit-profile` or
   a dedicated "Confidentialité" panel), visible only to a user with edit
   rights on that person (FR-004): a switch "Rendre ce profil public" with a

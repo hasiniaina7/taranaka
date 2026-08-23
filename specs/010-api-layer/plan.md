@@ -40,6 +40,15 @@ own (FR-006) — every endpoint calls into the exact same
 `PersonPrivacy`/query classes the web controllers use, so a future change
 to those rules automatically applies to both surfaces.
 
+**Sequencing dependency**: this spec's Resources call into `PersonPrivacy`
+(spec 003/007), `Lineage`/`Lineage::scopeSearch()` (specs 001/006), and
+`Person::scopeSearch()` (spec 006) — none of which exist in the codebase
+yet as of this plan being written. This is expected under sequential
+Spec Kit delivery (010 is deliberately last), not a defect in this plan,
+but implementation MUST NOT begin until those prerequisites are actually
+implemented (tasks.md T003a is a hard gate on this, not just documentation
+of the risk).
+
 **Scale/Scope**: 5 read endpoints + 1 docs page, no write endpoints (out of
 scope per spec.md Assumptions).
 

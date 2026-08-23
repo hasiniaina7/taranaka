@@ -87,7 +87,7 @@ specs/004-descendant-explorer/
 ```text
 app/
 ├── Http/Controllers/Front/
-│   └── DescendantsController.php   # NEW public GET /people/{person}/descendants (reuses existing route name conflict — see research.md)
+│   └── DescendantsController.php   # NEW public GET /p/{person}/descendants — distinct URI from the existing authenticated `people/{person}/descendants` (see research.md's URI-collision decision)
 ├── Livewire/People/Descendants/
 │   ├── Explorer.php + blade        # DescendantExplorer — tab switch, generation control, hosts Tree/List
 │   ├── Tree.php + blade            # DescendantTree — renders nodes from DescendantsQueryInterface result, client-side expand/collapse

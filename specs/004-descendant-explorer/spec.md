@@ -141,10 +141,15 @@ itself.
 
 ### Routes / Pages
 
-- `GET /people/{person}/descendants` — becomes a **public** route (the
-  underlying route already exists per the 000 audit but is currently behind
-  `auth:sanctum`; this spec makes the public variant available, reusing the
-  same view/component shell where possible).
+- `GET /p/{person}/descendants` — new **public** route under the same `/p/`
+  prefix as spec 003's public profile route. It MUST NOT reuse the literal
+  `people/{person}/descendants` URI: that exact path is already registered
+  (authenticated, `people.descendants`, `Back\PeopleController@descendants`
+  per `routes/web.php`), and Laravel serves only the first-registered route
+  for a duplicate URI+method pair regardless of route *name* — a same-URI
+  "public variant" would make one of the two routes permanently
+  unreachable. The public route reuses the same view/component shell where
+  possible, just at its own URI.
 
 ### Livewire Components
 

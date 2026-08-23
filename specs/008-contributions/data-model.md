@@ -26,7 +26,7 @@
 **Relationships**:
 - `author(): BelongsTo<User>`
 - `reviewer(): BelongsTo<User>` (nullable)
-- `target(): MorphTo`-style resolution by `target_type`/`target_id` — implemented as an explicit accessor (not Eloquent's built-in polymorphic relation, since `target_type` values include non-model states like `person_new`) rather than a literal `morphTo()`.
+- `target(): MorphTo`-style resolution by `target_type`/`target_id` — implemented as an explicit accessor (not Eloquent's built-in polymorphic relation, since `target_type` values include non-model states like `person_new`) rather than a literal `morphTo()`. For `target_type` values `person`/`couple`, the accessor MUST resolve via `Person::withoutGlobalScope('team')->find($target_id)` / `Couple::withoutGlobalScope('team')->find($target_id)` — the target is frequently outside the current viewer's team (that's this spec's reason to exist per FR-004), and the default `team` global scope would otherwise silently return null for exactly that case.
 
 **Business rules**:
 - Accepting (`status → accepted`) triggers applying `new_value` to

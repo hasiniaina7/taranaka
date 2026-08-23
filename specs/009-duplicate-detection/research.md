@@ -20,20 +20,37 @@
 
 ## Decision: weighting formula (name closeness × birth-year proximity)
 
-- **Decision**: `score = nameScore * 0.6 + birthYearScore * 0.4` where
+- **Decision**: `score = nameScore * 0.3 + birthYearScore * 0.7` where
   `nameScore` is a normalized string-similarity measure (e.g. Levenshtein
-  ratio) between full names, and `birthYearScore` is `1.0` if both years
-  match exactly, decaying linearly to `0.0` at a 20-year gap (matching
-  spec.md SC-002's explicit "20+ years apart → no warning" acceptance
-  bound), and `0.5` (neutral, lower-confidence) if either birth year is
-  unknown.
+  ratio, 1.0 for an exact match) between full names, and `birthYearScore`
+  is `1.0` if both years match exactly, decaying linearly to `0.0` at a
+  **40-year** gap (`birthYearScore = max(0, 1 - gapInYears / 40)`), and
+  `0.5` (neutral, lower-confidence) if either birth year is unknown.
+- **Correction (post-`/speckit-analyze`)**: the original 0.6/0.4 weighting
+  with a 20-year decay window had a mathematical floor of `0.6` for any
+  exact name match (`nameScore=1.0`, `birthYearScore=0`) — meaning no
+  birth-year gap, however large, could ever bring the score below `0.6`.
+  This made the 20-year "no warning" (SC-002) and 40-year "low score" (User
+  Story 3, Acceptance Scenario 1) requirements mathematically unreachable.
+  The corrected weights/window give an exact-match floor of `0.3` (name
+  weight alone) and these checkpoints: gap=0 → `1.0` (mandatory
+  acknowledgment gate, ≥0.75); gap≈14 years → crosses below the `0.75`
+  gate; gap=20 years → `0.65` (low-confidence band, `0.4`–`0.75` — no
+  *mandatory* warning, satisfying SC-002's "no warning is shown"); gap=40
+  years → `0.3` (below the `0.4` low-confidence floor — not shown at all,
+  satisfying Acceptance Scenario 1's "score low enough that no warning is
+  shown").
 - **Rationale**: Directly derived from spec 009's Acceptance Scenarios
   (User Story 3): same name + matching year → high score; same name + 40
-  years apart → low score. The 20-year linear decay boundary is chosen to
-  satisfy SC-002's explicit numeric example without overfitting to it.
+  years apart → low score, below the display floor. The 40-year linear
+  decay window (rather than 20) is what makes a 20-year gap and a 40-year
+  gap land in genuinely different bands instead of both hitting the same
+  floor value.
 - **Alternatives considered**: A learned/ML similarity model — explicitly
   rejected by spec.md's Assumptions ("advanced probabilistic/ML matching is
-  explicitly out of scope").
+  explicitly out of scope"). Keeping the original 0.6/0.4 weights but
+  removing the 20-year floor clamp (letting `birthYearScore` go negative)
+  — rejected as needlessly non-intuitive; a score should stay in `[0, 1]`.
 
 ## Decision: threshold for "requires acknowledgment" (soft-gate, FR-006)
 

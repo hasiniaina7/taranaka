@@ -131,9 +131,13 @@ wherever a genealogical relationship does, consistent with spec 002.
 
 ### Routes / Pages
 
-- `GET /people/{person}/ancestors` — becomes a **public** route, mirroring
-  spec 004's route change (currently behind `auth:sanctum` per the 000
-  audit).
+- `GET /p/{person}/ancestors` — new **public** route, under the same `/p/`
+  prefix as specs 003/004, mirroring spec 004's URI-collision fix: it MUST
+  NOT reuse the literal `people/{person}/ancestors` path, which is already
+  registered (authenticated, `people.ancestors`,
+  `Back\PeopleController@ancestors` per `routes/web.php`) — Laravel would
+  only serve whichever route registers first for a duplicate URI+method
+  pair, regardless of route name.
 
 ### Livewire Components
 

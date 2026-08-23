@@ -38,7 +38,7 @@ description: "Task list for feature implementation"
 
 - [ ] T003 [P] Regression test in `tests/Feature/DescendantExplorer/CrossTeamDescendantsAppearInOneTraversalTest.php` asserting `App\Queries\MySqlDescendantsQuery::getDescendants()` (existing, unmodified per Constitution Principle VI) returns a shared descendant across the two-team fixture from spec 002's quickstart in a single traversal. This documents and locks in the research.md finding — it is NOT a task to add cross-team filtering to the query.
 - [ ] T004 Implement `show(Person $person): View` in `app/Http/Controllers/Front/DescendantsController.php`, resolving `App\Contracts\DescendantsQueryInterface` from the container and rendering the Explorer Livewire wrapper view for the given person.
-- [ ] T005 [P] Register the public route in `routes/web.php`: `GET /people/{person}/descendants` outside the `auth:sanctum` middleware group, named `front.people.descendants`, pointing to `DescendantsController::show`. Leave the existing authenticated `people.descendants` route (`routes/web.php:48`, `Back\PeopleController@descendants`) untouched.
+- [ ] T005 [P] Register the public route in `routes/web.php`: `GET /p/{person}/descendants` outside the `auth:sanctum` middleware group, named `front.people.descendants`, pointing to `DescendantsController::show`. MUST use the `/p/` prefix, NOT `people/{person}/descendants` — that exact URI is already registered by the existing authenticated `people.descendants` route (`routes/web.php:48`, `Back\PeopleController@descendants`) and reusing it (even under a different route name) would make one of the two routes permanently unreachable. Leave the existing authenticated route untouched.
 - [ ] T006 Create `app/Livewire/People/Descendants/Explorer.php` + `resources/views/livewire/people/descendants/explorer.blade.php` — `mount(Person $person)`, public `$view = 'tree'` and `$maxDepth` (default 3) properties, a Tree/List tab switch, and the shared root-person header (name, photo) reused from `PersonProfile` (spec 003).
 - [ ] T007 [P] Verify `App\Support\PersonPrivacy::isPubliclyVisible()` (`app/Support/PersonPrivacy.php`) and the `PrivacyBanner` Blade component (`app/View/Components/PrivacyBanner.php`, spec 003) are available for reuse by descendant nodes; no new code if already present — this is a blocking prerequisite for the privacy-related tasks in User Story 1.
 
@@ -56,7 +56,7 @@ description: "Task list for feature implementation"
 
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T008 [P] [US1] Feature test `tests/Feature/DescendantExplorer/GuestCanViewDescendantTreeTest.php` — a signed-out visitor opening `/people/{person}/descendants` sees the root person and first-level children, with deeper branches collapsed by default.
+- [ ] T008 [P] [US1] Feature test `tests/Feature/DescendantExplorer/GuestCanViewDescendantTreeTest.php` — a signed-out visitor opening `/p/{person}/descendants` sees the root person and first-level children, with deeper branches collapsed by default.
 - [ ] T009 [P] [US1] Feature test `tests/Feature/DescendantExplorer/ProgressiveExpandCollapseTest.php` — clicking a collapsed branch's expand affordance reveals the next generation via a Livewire action, without a full page reload; each node links to `people.profile` for that person.
 - [ ] T010 [P] [US1] Feature test `tests/Feature/DescendantExplorer/LivingDescendantNodePrivacyTest.php` — a living descendant node renders through `PrivacyBanner` without private fields, consistent with spec 003 profile behavior.
 

@@ -57,7 +57,7 @@ beyond `PrivacyToggle` already scoped in spec.md's UI section.
 | IV. MySQL 8 | PASS | Single boolean column, no engine-specific behavior. |
 | V. Test-First | GATE | SC-001 (0% leakage) is the highest-stakes test in the entire roadmap. |
 | VI. Reuse Recursive-Query Engine | N/A | Not a traversal feature. |
-| VII. Teams Repositioned | N/A | Privacy is orthogonal to team ownership (spec.md doesn't include a Team/Lineage scope section for this reason — confirmed appropriate). |
+| VII. Teams Repositioned | PASS | Privacy is orthogonal to team ownership; spec.md's "Team/Lineage scope interaction" section states this explicitly (Development Workflow mandates the section be present on every spec touching `Person`, even when the conclusion is "no interaction"). |
 | IX. Migrations Preserve Attributes | PASS | Additive-only migration; no existing column touched. |
 | Full-stack specs | PASS | UI section in spec.md; mapped below. |
 

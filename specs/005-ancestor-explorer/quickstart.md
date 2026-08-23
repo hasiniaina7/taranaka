@@ -2,7 +2,7 @@
 
 ## 1. Tree view (User Story 1)
 
-1. As a signed-out visitor, open `/people/{id}/ancestors` for a person with
+1. As a signed-out visitor, open `/p/{id}/ancestors` for a person with
    2+ recorded generations of ancestors.
 2. **Expected**: root node + parents shown; grandparents collapsed until
    expanded, loading only that branch.

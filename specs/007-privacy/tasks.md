@@ -59,9 +59,9 @@ description: "Task list for feature 007-privacy: Privacy Rules for Living People
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Add `PrivacyBanner` Livewire component at `app/Livewire/People/PrivacyBanner.php` + `resources/views/livewire/people/privacy-banner.blade.php` rendering the "Profil privé — informations limitées" indicator, driven by `PersonPrivacy::isPubliclyVisible()`
-- [ ] T011 [US1] Wire spec 003's profile view to consult `PersonPrivacy::publicFields()`/`isPubliclyVisible()` and render `PrivacyBanner` when a living, non-opted-in person is shown (no per-feature reimplementation, per FR-008)
-- [ ] T012 [US1] Wire spec 004/005's tree/node views to consult the same `PersonPrivacy` rule and render `PrivacyBanner` identically to the profile surface (spec.md Acceptance Scenario 2 — no surface exempt)
+- [ ] T010 [US1] Confirm `PrivacyBanner` (already created by spec 003 as a stateless Blade component: `app/View/Components/PrivacyBanner.php` + `resources/views/components/privacy-banner.blade.php`) needs NO changes — it renders purely from a boolean `shown` prop. Do NOT create a new/Livewire `PrivacyBanner`; T008/T009 already exercise it indirectly through `isPubliclyVisible()`. This task is a verification step, not new component work.
+- [ ] T011 [US1] Wire spec 003's profile view to consult `PersonPrivacy::publicFields()`/`isPubliclyVisible()` and pass the result into the existing `<x-privacy-banner :shown="..." />` when a living, non-opted-in person is shown (no per-feature reimplementation, per FR-008)
+- [ ] T012 [US1] Wire spec 004/005's tree/node views to consult the same `PersonPrivacy` rule and render the existing `PrivacyBanner` Blade component identically to the profile surface (spec.md Acceptance Scenario 2 — no surface exempt)
 - [ ] T013 [US1] Wire spec 006's search result rendering to consult the same `PersonPrivacy` rule so sensitive fields never appear in search output
 
 **Checkpoint**: User Story 1 fully functional and independently testable — living persons' sensitive data is withheld on every public surface
@@ -157,7 +157,7 @@ Task: "Migration test in tests/Feature/Privacy/IsPubliclyVisibleColumnMigrationT
 Task: "Cross-surface test in tests/Feature/Privacy/LivingPersonDefaultProtectedAcrossAllSurfacesTest.php"
 Task: "Unit test in tests/Unit/Support/PersonPrivacyTest.php"
 
-# Once PrivacyBanner exists (T010), wire the three surfaces in parallel:
+# Once T010 confirms the existing PrivacyBanner needs no changes, wire the three surfaces in parallel:
 Task: "Wire spec 003 profile view to PersonPrivacy"
 Task: "Wire spec 004/005 tree views to PersonPrivacy"
 Task: "Wire spec 006 search results to PersonPrivacy"

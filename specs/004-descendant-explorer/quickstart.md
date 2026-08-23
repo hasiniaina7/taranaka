@@ -2,7 +2,7 @@
 
 ## 1. Tree view (User Story 1)
 
-1. As a signed-out visitor, open `/people/{id}/descendants` for a person
+1. As a signed-out visitor, open `/p/{id}/descendants` for a person
    with 3+ recorded generations of descendants.
 2. **Expected**: root node + first-level children shown; deeper branches
    collapsed. Click to expand — next generation reveals without a full page

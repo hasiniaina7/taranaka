@@ -70,7 +70,7 @@ specs/005-ancestor-explorer/
 ```text
 app/
 ├── Http/Controllers/Front/
-│   └── AncestorsController.php     # NEW public GET /people/{person}/ancestors
+│   └── AncestorsController.php     # NEW public GET /p/{person}/ancestors
 ├── Livewire/People/Ancestors/
 │   ├── Explorer.php + blade        # AncestorExplorer — same shell pattern as DescendantExplorer
 │   ├── Tree.php + blade            # AncestorTree — includes "unknown parent" placeholder rendering (FR-006)
