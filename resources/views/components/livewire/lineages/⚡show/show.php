@@ -20,14 +20,8 @@ new class extends Component
      */
     public function visibleMembers(): Collection
     {
-        return $this->lineage->people()->get()->filter(function ($person): bool {
-            if (class_exists(PersonPrivacy::class)) {
-                return PersonPrivacy::isPubliclyVisible($person);
-            }
-
-            // Temporary fallback until spec 007 (PersonPrivacy) lands: only deceased
-            // people are publicly visible by default (FR-009).
-            return $person->isDeceased();
-        })->values();
+        return $this->lineage->people()->get()
+            ->filter(fn ($person): bool => PersonPrivacy::isPubliclyVisible($person))
+            ->values();
     }
 };

@@ -46,7 +46,7 @@
                                             {{ $person->birthYear }} - {{ $person->deathYear }}
                                         </td>
                                         <td class="px-6 py-4 text-right whitespace-nowrap">
-                                            <x-ts-link href="{{ route('people.show', $person) }}">
+                                            <x-ts-link href="{{ route('public.people.show', $person) }}">
                                                 {{ __('app.show') }}
                                             </x-ts-link>
                                         </td>
