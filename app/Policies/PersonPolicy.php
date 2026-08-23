@@ -27,4 +27,14 @@ final class PersonPolicy
     {
         return $this->update($user, $person);
     }
+
+    /**
+     * Determine whether the user can toggle the person's public-visibility
+     * opt-in (spec 007 FR-004) — reuses the ownership/edit-rights rule
+     * verbatim.
+     */
+    public function togglePrivacy(User $user, Person $person): bool
+    {
+        return $this->update($user, $person);
+    }
 }

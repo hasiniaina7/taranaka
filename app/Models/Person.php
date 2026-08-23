@@ -97,6 +97,7 @@ final class Person extends Model implements HasMedia
         'phone',
 
         'photo',
+        'is_publicly_visible',
 
         'team_id',
     ];
@@ -1030,10 +1031,11 @@ final class Person extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'dob' => 'date:Y-m-d',
-            'dod' => 'date:Y-m-d',
-            'yob' => 'integer',
-            'yod' => 'integer',
+            'dob'                 => 'date:Y-m-d',
+            'dod'                 => 'date:Y-m-d',
+            'yob'                 => 'integer',
+            'yod'                 => 'integer',
+            'is_publicly_visible' => 'boolean',
         ];
     }
 

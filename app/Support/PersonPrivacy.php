@@ -7,10 +7,9 @@ namespace App\Support;
 use App\Models\Person;
 
 /**
- * Interim public-visibility rule for a Person (spec 003).
- *
- * Spec 007 replaces the body of {@see isPubliclyVisible()} to also check an
- * opt-in flag, without changing this class's call sites.
+ * Single, reusable public-visibility rule for a Person (spec 007), consumed
+ * by every public surface (specs 003/004/005/006) instead of each feature
+ * reimplementing its own living/private check.
  */
 final class PersonPrivacy
 {
@@ -21,7 +20,7 @@ final class PersonPrivacy
 
     public static function isPubliclyVisible(Person $person): bool
     {
-        return ! self::isLiving($person);
+        return ! self::isLiving($person) || (bool) $person->is_publicly_visible;
     }
 
     /**

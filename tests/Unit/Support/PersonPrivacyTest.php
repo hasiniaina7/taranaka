@@ -48,6 +48,18 @@ test('publicFields omits sensitive fields for a living, non-opted-in person', fu
     }
 });
 
+test('isPubliclyVisible reflects the living/opted-in/deceased-via-dod/deceased-via-yod matrix', function (): void {
+    $livingNotOptedIn = Person::factory()->make(['yod' => null, 'dod' => null, 'is_publicly_visible' => false]);
+    $livingOptedIn    = Person::factory()->make(['yod' => null, 'dod' => null, 'is_publicly_visible' => true]);
+    $deceasedViaDod   = Person::factory()->make(['yod' => null, 'dod' => '2000-01-01', 'is_publicly_visible' => false]);
+    $deceasedViaYod   = Person::factory()->make(['yod' => 2000, 'dod' => null, 'is_publicly_visible' => false]);
+
+    expect(PersonPrivacy::isPubliclyVisible($livingNotOptedIn))->toBeFalse()
+        ->and(PersonPrivacy::isPubliclyVisible($livingOptedIn))->toBeTrue()
+        ->and(PersonPrivacy::isPubliclyVisible($deceasedViaDod))->toBeTrue()
+        ->and(PersonPrivacy::isPubliclyVisible($deceasedViaYod))->toBeTrue();
+});
+
 test('publicFields includes sensitive fields for a deceased person', function (): void {
     $deceased = Person::factory()->make([
         'yod'    => 2000,
