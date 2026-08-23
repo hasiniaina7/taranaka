@@ -197,4 +197,15 @@ return [
     'search_similar'       => 'Ähnliche Personen suchen',
     'similar_persons'      => 'Ähnliche vorhandene Personen',
     'no_similar_persons'   => 'Noch keine ähnlichen Personen gefunden — geben Sie einige Namen ein und klicken Sie auf die Suchschaltfläche.',
-    'similar_persons_hint' => 'Um zu vermeiden, eine Person mehr als einmal hinzuzufügen, werden hier ähnliche vorhandene Personen angezeigt, nachdem Sie einen Vornamen, Nachnamen, Geburtsnamen oder Spitznamen eingegeben und auf die Suchschaltfläche geklickt haben.', ];
+    'similar_persons_hint' => 'Um zu vermeiden, eine Person mehr als einmal hinzuzufügen, werden hier ähnliche vorhandene Personen angezeigt, nachdem Sie einen Vornamen, Nachnamen, Geburtsnamen oder Spitznamen eingegeben und auf die Suchschaltfläche geklickt haben.',
+
+    'duplicate_warning_title'           => 'Möglicherweise existiert bereits eine ähnliche Person',
+    'duplicate_warning_intro'           => 'Prüfen Sie diese Übereinstimmungen, bevor Sie einen weiteren Eintrag erstellen.',
+    'duplicate_high_confidence'         => 'Wahrscheinliche Übereinstimmung',
+    'duplicate_low_confidence'          => 'Übereinstimmung mit geringer Sicherheit',
+    'duplicate_similarity'              => 'Ähnlichkeit',
+    'duplicate_private_profile'         => 'Privates Profil — persönliche Angaben sind ausgeblendet.',
+    'duplicate_same_person'             => 'Dies ist dieselbe Person → vorhandenen Eintrag verwenden',
+    'duplicate_distinct_people'         => 'Dies sind verschiedene Personen → fortfahren',
+    'duplicate_acknowledgment_required' => 'Prüfen Sie die wahrscheinliche Übereinstimmung und bestätigen Sie vor dem Speichern, dass es verschiedene Personen sind.',
+];

@@ -198,4 +198,14 @@ return [
     'similar_persons'      => 'Những người tương tự đã tồn tại',
     'no_similar_persons'   => 'Chưa tìm thấy người tương tự — hãy nhập một số tên và nhấp vào nút tìm kiếm.',
     'similar_persons_hint' => 'Để tránh thêm một người nhiều hơn một lần, các người đã tồn tại và tương tự sẽ được hiển thị ở đây sau khi bạn nhập tên, họ, tên khai sinh hoặc biệt danh và nhấp vào nút tìm kiếm.',
+
+    'duplicate_warning_title'           => 'Có thể đã tồn tại một người tương tự',
+    'duplicate_warning_intro'           => 'Hãy xem lại các kết quả trùng khớp trước khi tạo hồ sơ mới.',
+    'duplicate_high_confidence'         => 'Có khả năng trùng khớp',
+    'duplicate_low_confidence'          => 'Trùng khớp có độ tin cậy thấp',
+    'duplicate_similarity'              => 'Độ tương đồng',
+    'duplicate_private_profile'         => 'Hồ sơ riêng tư — thông tin cá nhân đã được ẩn.',
+    'duplicate_same_person'             => 'Đây là cùng một người → dùng hồ sơ hiện có',
+    'duplicate_distinct_people'         => 'Đây là những người khác nhau → tiếp tục',
+    'duplicate_acknowledgment_required' => 'Hãy xem lại kết quả có khả năng trùng khớp và xác nhận đây là những người khác nhau trước khi lưu.',
 ];

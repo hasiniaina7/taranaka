@@ -198,4 +198,14 @@ return [
     'similar_persons'      => '相似的现有人物',
     'no_similar_persons'   => '尚未找到相似的人物 — 输入一些姓名并点击搜索按钮。',
     'similar_persons_hint' => '为了避免重复添加同一个人，当您输入名字、姓氏、出生姓名或昵称并点击搜索按钮后，这里会显示相似的现有人物。',
+
+    'duplicate_warning_title'           => '可能已存在相似人物',
+    'duplicate_warning_intro'           => '创建新记录前，请检查这些匹配项。',
+    'duplicate_high_confidence'         => '很可能匹配',
+    'duplicate_low_confidence'          => '低置信度匹配',
+    'duplicate_similarity'              => '相似度',
+    'duplicate_private_profile'         => '私密资料 — 个人信息已隐藏。',
+    'duplicate_same_person'             => '这是同一个人 → 使用现有记录',
+    'duplicate_distinct_people'         => '这些是不同的人 → 继续',
+    'duplicate_acknowledgment_required' => '保存前请检查可能的匹配项，并确认这些是不同的人。',
 ];

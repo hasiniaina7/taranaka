@@ -198,4 +198,14 @@ return [
     'similar_persons'      => 'Vergelijkbare bestaande personen',
     'no_similar_persons'   => 'Nog geen vergelijkbare personen gevonden — voer enkele namen in en klik op de zoekknop.',
     'similar_persons_hint' => 'Om te voorkomen dat een persoon meer dan één keer wordt toegevoegd, worden hier vergelijkbare bestaande personen getoond nadat u een voornaam, achternaam, geboortenaam of bijnaam hebt ingevoerd en op de zoekknop hebt geklikt.',
+
+    'duplicate_warning_title'           => 'Mogelijk bestaat er al een vergelijkbare persoon',
+    'duplicate_warning_intro'           => 'Controleer deze overeenkomsten voordat u een nieuw record maakt.',
+    'duplicate_high_confidence'         => 'Waarschijnlijke overeenkomst',
+    'duplicate_low_confidence'          => 'Overeenkomst met lage betrouwbaarheid',
+    'duplicate_similarity'              => 'Gelijkenis',
+    'duplicate_private_profile'         => 'Privéprofiel — persoonlijke gegevens zijn verborgen.',
+    'duplicate_same_person'             => 'Dit is dezelfde persoon → bestaand record gebruiken',
+    'duplicate_distinct_people'         => 'Dit zijn verschillende personen → doorgaan',
+    'duplicate_acknowledgment_required' => 'Controleer de waarschijnlijke overeenkomst en bevestig vóór het opslaan dat het verschillende personen zijn.',
 ];
