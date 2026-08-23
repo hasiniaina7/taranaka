@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Front\AncestorsController;
+use App\Http\Controllers\Front\DescendantsController;
+use App\Http\Controllers\Front\SearchController;
 use Illuminate\Support\Facades\Route;
 
 // -----------------------------------------------------------------------------------
@@ -26,6 +29,9 @@ Route::livewire('lineages/{lineage:slug}', 'lineages::show')->name('lineages.sho
 // authenticated `people/{person}` route (people.show)
 // -----------------------------------------------------------------------------------
 Route::livewire('p/{person}', 'people::public-profile')->name('public.people.show');
+Route::get('p/{person}/ancestors', AncestorsController::class)->name('front.people.ancestors');
+Route::get('p/{person}/descendants', [DescendantsController::class, 'show'])->name('front.people.descendants');
+Route::get('search', [SearchController::class, 'show'])->name('public.search');
 
 // -----------------------------------------------------------------------------------
 // backend routes
@@ -58,7 +64,7 @@ Route::middleware([
     // people
     // -----------------------------------------------------------------------------------
     Route::controller(App\Http\Controllers\Back\PeopleController::class)->group(function (): void {
-        Route::get('search', 'search')->name('people.search');
+        Route::get('people/search', 'search')->name('people.search');
         Route::get('birthdays', 'birthdays')->name('people.birthdays');
 
         Route::get('people/add', 'add')->name('people.add');

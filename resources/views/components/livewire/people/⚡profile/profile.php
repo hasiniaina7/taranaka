@@ -53,7 +53,7 @@ new class extends Component
 
             $this->toast()->success(__('app.delete'), e($this->person->name) . ' ' . __('app.deleted') . '.')->send();
 
-            $this->redirect('/search');
+            $this->redirect(route('people.search', absolute: false));
         }
     }
 };

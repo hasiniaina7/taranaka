@@ -91,7 +91,7 @@ new class extends Component
 
                 $this->toast()->success('Success', "Imported {$individualsImported} individuals and {$familiesImported} families into {$teamName}.")->send();
 
-                $this->redirect('/search');
+                $this->redirect(route('people.search', absolute: false));
             } else {
                 $errorMessage = $this->result['error'] ?? 'Unknown error occurred';
                 $this->toast()->error('Error', $errorMessage)->send();
