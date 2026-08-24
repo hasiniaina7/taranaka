@@ -192,7 +192,12 @@ window.familyTreeCanvas = ({ mode, tree, profileUrlTemplate }) => ({
             this.chart = createChart(this.$refs.canvas, data);
             this.chart
                 .setCardSvg()
+                .setCardDisplay((datum) => datum.data.label)
                 .setOnCardClick((event, datum) => this.handleCardClick(datum));
+            // Partner cards are already synthesized in the payload (see attachPartners),
+            // so family-chart's own "missing second parent" placeholder would be a
+            // redundant, unlabeled duplicate card next to every single-blood-parent child.
+            this.chart.setSingleParentEmptyCard(false);
             this.chart.updateTree({ initial: true });
 
             return;
