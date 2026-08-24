@@ -42,16 +42,21 @@ this one.
 
 ## Decision: Couple pairing is assembled client-side from existing relations
 
-**Decision**: Both payload builders are extended to include a `partner_ids`
+**Decision**: Both payload builders are extended to include a `partners`
 array per node (from `Person::couples()`, already a `HasManyMerged` over
-`person1_id`/`person2_id`), plus one `couples` list (pairs + their shared
-children) consumed by the adapter that builds `family-chart`'s input. No new
-Eloquent relation or migration is needed — `Couple` already models this.
+`person1_id`/`person2_id`), carrying each partner's `id`, `name`, and
+`photo_url` directly — not just an id. No new Eloquent relation or migration
+is needed — `Couple` already models this.
 
 **Rationale**: FR-009 (clarified) requires couples to render as paired
 nodes. `family-chart`'s native data format already expects couple pairing
-(`rels.spouses`); the existing `Person::couples()` relation supplies exactly
-this without any new query.
+(`rels.spouses`), but a partner who married into the family is frequently
+*not* itself a node already present in the tree payload (a descendant's
+spouse is not a blood descendant, so the blood-line traversal never returns
+them) — an id alone would be unrenderable on the client. Carrying the
+partner's name/photo inline lets the JS adapter synthesize a minimal stub
+node for any partner not already in the flattened dataset, so the couple
+still renders correctly.
 
 ## Decision: Photo URL resolution reuses the existing legacy storage path
 

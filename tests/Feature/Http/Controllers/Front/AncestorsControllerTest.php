@@ -28,11 +28,14 @@ test('a guest can open the ancestor explorer with the root and first generation 
         'yod'       => 2020,
     ]);
 
+    // Since spec 012, profile navigation is resolved client-side by
+    // family-tree.js from each node's `personId` (against a profile URL
+    // template), not rendered as a server-side <a href> per node.
     test()->get(route('front.people.ancestors', $person))
         ->assertOk()
         ->assertSee('Root Person')
         ->assertSee('Father')
         ->assertSee('Mother')
         ->assertDontSee('Grandfather')
-        ->assertSee(route('public.people.show', $father), false);
+        ->assertSee((string) $father->id, false);
 });

@@ -10,7 +10,12 @@ use Illuminate\Support\Collection;
 use Livewire\Livewire;
 use Tests\Support\FakeDescendantsQuery;
 
-test('a branch expands and collapses through a Livewire action and every visible node links to its profile', function (): void {
+test('the full bounded tree is computed in a single query and every node id is reachable for client-side navigation', function (): void {
+    // Since spec 012, the canvas needs the whole bounded tree up front (so
+    // pan/zoom/expand-collapse happen client-side without further requests);
+    // "every visible node links to its profile" is now enforced by
+    // family-tree.js building each card's profile URL from `personId`
+    // (resources/js/family-tree.js), not by a server-rendered <a href>.
     $user       = User::factory()->withPersonalTeam()->create();
     $root       = Person::factory()->withUser($user)->create(['firstname' => 'Root', 'yod' => 1990]);
     $child      = Person::factory()->withUser($user)->create(['firstname' => 'Branch', 'father_id' => $root->id, 'yod' => 2010]);
@@ -26,13 +31,9 @@ test('a branch expands and collapses through a Livewire action and every visible
 
     Livewire::test(Tree::class, ['person' => $root, 'maxDepth' => 3])
         ->assertSee('Branch')
-        ->assertSee(route('public.people.show', $child), escape: false)
-        ->assertDontSee('Revealed')
-        ->call('toggleNode', $child->id)
         ->assertSee('Revealed')
-        ->assertSee(route('public.people.show', $grandchild), escape: false)
-        ->call('toggleNode', $child->id)
-        ->assertDontSee('Revealed');
+        ->assertSee((string) $child->id, false)
+        ->assertSee((string) $grandchild->id, false);
 
     expect($query->calls)->toHaveCount(1);
 });

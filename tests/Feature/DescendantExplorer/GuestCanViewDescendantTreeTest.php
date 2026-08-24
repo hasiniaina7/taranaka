@@ -11,7 +11,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Testing\TestResponse;
 use Tests\Support\FakeDescendantsQuery;
 
-test('a guest sees the root and first descendant generation while deeper branches start collapsed', function (): void {
+test('a guest sees the root and every descendant generation, with deeper branches starting collapsed in the canvas', function (): void {
+    // Since spec 012, the entire bounded tree is handed to family-chart in one
+    // payload (so pan/zoom/expand needs no further Livewire round-trip); the
+    // "collapsed" state below is enforced by the client-side canvas, not by
+    // omitting data from the server response.
     $user       = User::factory()->withPersonalTeam()->create();
     $root       = Person::factory()->withUser($user)->create(['firstname' => 'Root', 'surname' => 'Person', 'yod' => 1990]);
     $child      = Person::factory()->withUser($user)->create(['firstname' => 'First', 'surname' => 'Generation', 'father_id' => $root->id, 'yod' => 2010]);
@@ -27,7 +31,7 @@ test('a guest sees the root and first descendant generation while deeper branche
         ->assertOk()
         ->assertSee('Root Person')
         ->assertSee('First Generation')
-        ->assertDontSee('Hidden Grandchild');
+        ->assertSee('Hidden Grandchild');
 });
 
 test('a person without descendants has a clear empty state', function (): void {

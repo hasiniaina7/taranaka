@@ -25,9 +25,9 @@ description: "Task list for feature 012-public-tree-visualization"
 
 **Purpose**: Add the new frontend dependency and its Vite entry point.
 
-- [ ] T001 Add `family-chart` to `package.json` and run
+- [x] T001 Add `family-chart` to `package.json` and run
       `vendor/bin/sail npm install`
-- [ ] T002 [P] Create empty `resources/js/family-tree.js` entry point and
+- [x] T002 [P] Create empty `resources/js/family-tree.js` entry point and
       import it from `resources/js/app.js` so Vite bundles it
 
 **Checkpoint**: Dependency installed and bundled; no behavior yet.
@@ -44,39 +44,39 @@ are added to their existing output arrays (Constitution Principle VI).
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T003 [P] Write failing Pest test
+- [x] T003 [P] Write failing Pest test
       `tests/Feature/PublicTreeVisualization/DescendantTreePayloadIncludesPhotoAndPartnersTest.php`:
       seed a person with a photo on disk and a recorded couple; assert
       `Livewire\People\Descendants\Tree::tree()`'s output includes a correct
       `photo_url` and `partner_ids` for that node. Run
       `vendor/bin/sail artisan test --compact --filter=DescendantTreePayloadIncludesPhotoAndPartnersTest`
       and confirm it FAILS (fields don't exist yet).
-- [ ] T004 Implement `photo_url` (via the existing
+- [x] T004 Implement `photo_url` (via the existing
       `Storage::disk('photos')->url(...)` convention already used in
       `resources/views/components/tree-node/descendants.blade.php`) and
       `partner_ids` (via `Person::couples()`) in
       `app/Actions/BuildDescendantNodes.php`'s `execute()` mapping, to make
       T003 pass (depends on T003)
-- [ ] T005 [P] Write failing Pest test
+- [x] T005 [P] Write failing Pest test
       `tests/Feature/PublicTreeVisualization/AncestorTreePayloadIncludesPhotoAndPartnersTest.php`:
       same assertions as T003, against
       `Livewire\People\Ancestors\Tree::tree()`'s output
-- [ ] T006 Implement the same `photo_url`/`partner_ids` fields in
+- [x] T006 Implement the same `photo_url`/`partner_ids` fields in
       `app/Livewire/People/Ancestors/Tree.php`'s `loadBranch()`/`buildNode()`,
       to make T005 pass (depends on T005)
-- [ ] T007 [P] Write failing Pest test
+- [x] T007 [P] Write failing Pest test
       `tests/Feature/PublicTreeVisualization/LivingNodePhotoSuppressedTest.php`:
       a living, non-opted-in person with a photo on file MUST have
       `photo_url === null` in both trees' payloads, per FR-004/FR-010
-- [ ] T008 Implement the privacy-suppression check (reuse
+- [x] T008 Implement the privacy-suppression check (reuse
       `App\Support\PersonPrivacy`) around the `photo_url` assignment in both
       `BuildDescendantNodes` and `Ancestors\Tree`, to make T007 pass
       (depends on T007)
-- [ ] T009 Create the shared Blade component
+- [x] T009 Create the shared Blade component
       `resources/views/components/family-tree-canvas.blade.php`: a
       `wire:ignore` container plus an Alpine `x-data` binding that receives
       the tree payload and a root profile-URL template as props
-- [ ] T010 Implement `resources/js/family-tree.js`: initialize `family-chart`
+- [x] T010 Implement `resources/js/family-tree.js`: initialize `family-chart`
       inside the Alpine component from T009, with adapter functions that
       convert the extended payload (data-model.md's node shape) into
       `family-chart`'s `{id, data, rels}` input format, wire click-vs-drag
@@ -100,7 +100,7 @@ couple pairing, and node-click navigation to the person's profile.
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T011 [P] [US1] Feature test
+- [x] T011 [P] [US1] Feature test
       `tests/Feature/PublicTreeVisualization/DescendantTreeRendersCanvasTest.php`:
       `GET /p/{person}/descendants` for a seeded person response includes
       the `family-tree-canvas` container and an embedded payload containing
@@ -109,11 +109,11 @@ couple pairing, and node-click navigation to the person's profile.
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Update
+- [x] T012 [US1] Update
       `resources/views/livewire/people/descendants/tree.blade.php` to
       render `<x-family-tree-canvas>` with the descendant payload, replacing
       the `@include('livewire.people.descendants.partials.node', ...)` call
-- [ ] T013 [US1] Add the descendant-specific branch of the adapter in
+- [x] T013 [US1] Add the descendant-specific branch of the adapter in
       `resources/js/family-tree.js` (children + spouses relationships only)
 - [ ] T014 [US1] Manually verify (quickstart.md, User Story 1 section) that
       expanding a collapsed branch still triggers the existing Livewire
@@ -136,17 +136,17 @@ visual language as User Story 1.
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T015 [P] [US2] Feature test
+- [x] T015 [P] [US2] Feature test
       `tests/Feature/PublicTreeVisualization/AncestorTreeRendersCanvasTest.php`:
       `GET /p/{person}/ancestors` response includes the shared canvas
       container and a payload matching the ancestor tree's output
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Update
+- [x] T016 [US2] Update
       `resources/views/livewire/people/ancestors/tree.blade.php` to render
       `<x-family-tree-canvas>` with the ancestor payload
-- [ ] T017 [US2] Add the ancestor-specific branch of the adapter in
+- [x] T017 [US2] Add the ancestor-specific branch of the adapter in
       `resources/js/family-tree.js` (father/mother relationships, no
       children key)
 - [ ] T018 [US2] Manually verify (quickstart.md, User Story 2 section) that
@@ -168,7 +168,7 @@ touch pan/zoom works and nothing overflows the page horizontally.
 
 ### Implementation for User Story 3
 
-- [ ] T019 [P] [US3] Add responsive/touch CSS rules to
+- [x] T019 [P] [US3] Add responsive/touch CSS rules to
       `resources/css/app.css` for the `family-tree-canvas` container
       (viewport-width containment, touch-action rules enabling native
       pinch/pan on the canvas without triggering page scroll)
@@ -185,19 +185,28 @@ independently demonstrable.
 **Purpose**: Scope-boundary regression guard, formatting, and full
 regression pass.
 
-- [ ] T021 [P] Add
+- [x] T021 [P] Add
       `tests/Feature/PublicTreeVisualization/BackOfficeViewsUnaffectedTest.php`
       asserting the existing authenticated back-office routes
       (`people.show`, `people.chart`, `developer.*`, `moderation.*`) still
       render via their original views/components, unmodified by this
       feature (FR-007 regression guard)
-- [ ] T022 Run `vendor/bin/sail bin pint --dirty --format agent` and fix any
+- [x] T022 Run `vendor/bin/sail bin pint --dirty --format agent` and fix any
       formatting issues across all PHP files touched by this feature
-- [ ] T023 Run
+- [x] T023 Run
       `vendor/bin/sail artisan test --compact --filter=PublicTreeVisualization`
       and then the existing `DescendantExplorer`/`AncestorExplorer` suites,
       confirm zero regressions
-- [ ] T024 Update `quickstart.md` with any step that diverged during
+- [x] T024 Update `quickstart.md` with any step that diverged during
       implementation
 
 **Checkpoint**: Feature complete, tested, formatted, and documented.
+
+> **Note on T014/T018/T020**: left unchecked — these are manual, in-browser
+> verification steps (quickstart.md) that could not be run from this
+> headless implementation environment. Everything server-side (payload
+> shape, privacy suppression, route rendering, back-office non-regression)
+> is covered by the automated Pest suite, which passes in full (288
+> passed, 4 pre-existing skips, 0 failed). A human should still walk
+> through quickstart.md in a browser before considering the feature
+> release-ready.

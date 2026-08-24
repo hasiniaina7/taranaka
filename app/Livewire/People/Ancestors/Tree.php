@@ -7,6 +7,7 @@ namespace App\Livewire\People\Ancestors;
 use App\Contracts\AncestorsQueryInterface;
 use App\Models\Person;
 use App\Support\PersonPrivacy;
+use App\Support\PersonTreePresentation;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -26,7 +27,7 @@ class Tree extends Component
     #[Locked]
     public int $maxDepth;
 
-    /** @var array<int, array{id:int, firstname:string|null, surname:string|null, father_id:int|null, mother_id:int|null, yob:int|null, degree:int, depth:int, living:bool}> */
+    /** @var array<int, array{id:int, firstname:string|null, surname:string|null, father_id:int|null, mother_id:int|null, yob:int|null, degree:int, depth:int, living:bool, photo_url:string|null, partners:list<array{id: int, name: string, photo_url: string|null}>}> */
     public array $nodes = [];
 
     /** @var list<int> */
@@ -54,12 +55,14 @@ class Tree extends Component
 
         if (in_array($personId, $this->expandedNodeIds, true)) {
             $this->expandedNodeIds = array_values(array_diff($this->expandedNodeIds, [$personId]));
+            $this->dispatch('family-tree-updated', tree: $this->tree());
 
             return;
         }
 
         $this->loadBranch($personId, (int) $node['depth']);
         $this->expandedNodeIds[] = $personId;
+        $this->dispatch('family-tree-updated', tree: $this->tree());
     }
 
     /** @return array<string, mixed> */
@@ -116,6 +119,8 @@ class Tree extends Component
                 'degree'    => (int) $ancestor->degree,
                 'depth'     => $parentDepth + (int) $ancestor->degree,
                 'living'    => PersonPrivacy::isLiving($person),
+                'photo_url' => PersonTreePresentation::photoUrl($person),
+                'partners'  => PersonTreePresentation::partners($person),
             ];
 
             if (! isset($this->nodes[$nodeId]) || (int) $node['depth'] < (int) $this->nodes[$nodeId]['depth']) {
@@ -159,6 +164,7 @@ class Tree extends Component
                 $treeNode['children'][] = [
                     'unknown'      => true,
                     'relationship' => $relationship,
+                    'label'        => 'Parent inconnu',
                 ];
 
                 continue;

@@ -20,7 +20,7 @@ node, on top of their existing shape:
 | Field | Type | Source | Notes |
 |---|---|---|---|
 | `photo_url` | `string\|null` | `Storage::disk('photos')->url(...)` if the file exists, else `null` | FR-010. `null` renders the placeholder silhouette client-side. Suppressed (forced `null`) for privacy-limited living nodes (FR-004). |
-| `partner_ids` | `list<int>` | `Person::couples()` on the node's person, excluding the node itself | FR-009. One id per recorded couple (a remarried person can have more than one). |
+| `partners` | `list<{id: int, name: string, photo_url: string\|null}>` | `Person::couples()` on the node's person, excluding the node itself | FR-009. One entry per recorded couple (a remarried person can have more than one). Carries the partner's own name/photo directly, because a spouse who married into the family is frequently not itself a node already present in the tree payload (e.g. a descendant's spouse is not a blood descendant) — an id alone would be unrenderable. |
 
 Existing fields per tree (unchanged, listed for reference):
 
@@ -50,7 +50,9 @@ expected node format:
   },
   rels: {
     children: list<string>,  // child node ids
-    spouses: list<string>,   // partner_ids, stringified
+    spouses: list<string>,   // partners[].id, stringified; synthesized stub
+                              // nodes are added for partners not already
+                              // present in the payload (see research.md)
     father: string|null,     // ancestor tree only
     mother: string|null,     // ancestor tree only
   }

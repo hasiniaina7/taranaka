@@ -19,17 +19,26 @@
    themed with the site's existing colors/dark-mode.
 3. Drag to pan, scroll/pinch to zoom — canvas responds smoothly.
 4. Click a collapsed branch's expand affordance — next generation appears
-   without a full page reload (network tab shows a Livewire XHR, not a
-   document navigation).
+   instantly (no network activity): the whole bounded tree is already
+   present client-side (research.md Decision 2), so expand/collapse is
+   handled entirely by family-chart.
 5. Click (no drag) a node card — browser navigates to that person's public
    profile (spec 003).
 6. Confirm a couple in the seeded data renders as two cards joined by a
-   union line, with shared children attached below the pair.
+   union line, with shared children attached below the pair. A partner who
+   is not itself a blood descendant (e.g. married in) still renders — its
+   card is built from the `partners[].name`/`photo_url` carried on the
+   node that references it (data-model.md), not from a separate payload
+   entry.
 
 ## Validate User Story 2 — ancestor tree
 
-Repeat steps 1–6 above against `/p/{person}/ancestors` for a person with
-recorded ancestors.
+Repeat steps 1, 2, 3, 5, 6 above against `/p/{person}/ancestors` for a
+person with recorded ancestors. Step 4 differs here: only the loaded
+branches are known server-side (spec 005's per-branch loading is
+unchanged), so clicking a not-yet-loaded parent slot *does* trigger a
+Livewire `toggleBranch` call (network tab shows the XHR) before the canvas
+re-renders with the fresh branch.
 
 ## Validate User Story 3 — mobile
 

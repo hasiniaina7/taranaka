@@ -28,8 +28,17 @@ test('a living descendant is marked private without exposing an exact birth date
         FakeDescendantsQuery::row($living, 1, "{$root->id},{$living->id}"),
     ])));
 
-    Livewire::test(Tree::class, ['person' => $root, 'maxDepth' => 3])
+    // Since spec 012, node privacy is a payload property (is_living, no exact
+    // dob/dod) consumed by the client-side canvas rather than a server-
+    // rendered "private" badge string.
+    $tree = Livewire::test(Tree::class, ['person' => $root, 'maxDepth' => 3])
         ->assertSee('Living Descendant')
-        ->assertSee(__('person.profile_private'))
-        ->assertDontSee('2001-02-03');
+        ->instance()
+        ->tree();
+
+    $livingNode = collect($tree['children'])->firstWhere('id', $living->id);
+
+    expect($livingNode['is_living'])->toBeTrue();
+    expect($livingNode)->not->toHaveKey('dob');
+    expect($livingNode)->not->toHaveKey('dod');
 });

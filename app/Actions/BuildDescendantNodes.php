@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Contracts\DescendantsQueryInterface;
 use App\Models\Person;
 use App\Support\PersonPrivacy;
+use App\Support\PersonTreePresentation;
 use Illuminate\Support\Collection;
 
 /**
@@ -28,7 +29,9 @@ class BuildDescendantNodes
      *     birth_year: int|null,
      *     death_year: int|null,
      *     is_living: bool,
-     *     lineages: list<string>
+     *     lineages: list<string>,
+     *     photo_url: string|null,
+     *     partners: list<array{id: int, name: string, photo_url: string|null}>
      * }>
      */
     public function execute(Person $person, int $maxDepth): Collection
@@ -62,6 +65,8 @@ class BuildDescendantNodes
                     'death_year'      => $person->yod,
                     'is_living'       => PersonPrivacy::isLiving($person),
                     'lineages'        => $person->lineages->pluck('name')->values()->all(),
+                    'photo_url'       => PersonTreePresentation::photoUrl($person),
+                    'partners'        => PersonTreePresentation::partners($person),
                 ];
             })
             ->filter()

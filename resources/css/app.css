@@ -92,6 +92,33 @@
   position: relative;
   z-index: 0;
 }
+/* -------------------------------------------- */
+/* family-chart canvas (spec 012)                */
+/* -------------------------------------------- */
+.family-tree-canvas {
+  touch-action: pan-x pan-y pinch-zoom;
+}
+.family-tree-canvas .f3 {
+  --female-color: var(--color-primary-300);
+  --male-color: var(--color-primary-500);
+  --genderless-color: var(--color-secondary-400);
+  --background-color: transparent;
+  --text-color: var(--color-gray-900);
+}
+:where(.dark) .family-tree-canvas .f3 {
+  --text-color: var(--color-gray-100);
+}
+.family-tree-canvas .f3 .cursor-pointer {
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .family-tree-canvas {
+    height: 60vh;
+    min-height: 320px;
+  }
+}
+
 .ribbon {
   --f: 5px;   /* control the folded part*/
   --r: 5px;   /* control the ribbon shape */

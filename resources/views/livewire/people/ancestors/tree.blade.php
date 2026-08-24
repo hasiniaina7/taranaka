@@ -1,16 +1,18 @@
 {{--
-The tree renders only branches explicitly loaded by the visitor.
+Only branches explicitly loaded by the visitor are queried server-side
+(spec 005); family-chart renders the loaded branches and, since spec 012,
+triggers a `toggleBranch` Livewire call itself when a visitor clicks a
+not-yet-loaded parent slot (family-tree-updated event refreshes the canvas).
 --}}
 @php($tree = $this->tree())
 
-<section
-    class="overflow-x-auto rounded-sm border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-600 dark:bg-neutral-700"
-    aria-label="Arbre des ancêtres"
->
+<section aria-label="Arbre des ancêtres">
     @if ($tree !== [])
-        <ul class="min-w-max" role="tree">
-            @include('livewire.people.ancestors.partials.tree-node', ['node' => $tree])
-        </ul>
+        <x-family-tree-canvas
+            :tree="$tree"
+            mode="ancestor"
+            :profile-url-template="route('public.people.show', ['person' => '__ID__'])"
+        />
 
         @if (! $tree['canExpand'] && $tree['children'] === [])
             <p class="mt-4 text-center text-sm text-neutral-500 dark:text-neutral-300">
