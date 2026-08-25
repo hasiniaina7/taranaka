@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Actions\People\FindDuplicatePersonCandidates;
+use App\Actions\People\RecordDuplicateResolution;
 use App\Livewire\Forms\People\PersonForm;
 use App\Livewire\Traits\AuthorizesPersonActions;
 use App\Livewire\Traits\HandlesPhotoUploads;
@@ -10,8 +12,8 @@ use App\Livewire\Traits\TrimStringsAndConvertEmptyStringsToNull;
 use App\Models\Person as PersonModel;
 use App\Rules\DobValid;
 use App\Rules\YobValid;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use TallStackUi\Traits\Interactions;
@@ -25,18 +27,14 @@ new class extends Component
 
     public PersonForm $form;
 
-    /** Controls whether the similar-persons results pane is visible. */
-    public bool $searchTriggered = false;
+    public ?string $duplicateAcknowledgmentFingerprint = null;
 
+    /**
+     * @return list<array{id: int, name: string, lifespan: ?string, lineages: list<string>, private: bool, score: float, percentage: int, high_confidence: bool, url: string}>
+     */
     #[Computed]
-    public function similarPersons(): Collection
+    public function duplicateCandidates(): array
     {
-        $user = auth()->user();
-
-        if (! $user || ! $user->currentTeam) {
-            return new Collection;
-        }
-
         $nameFields = [
             $this->form->firstname,
             $this->form->surname,
@@ -44,36 +42,73 @@ new class extends Component
             $this->form->nickname,
         ];
 
-        $hasMinLength = collect($nameFields)->contains(
-            fn ($value) => mb_strlen((string) $value) >= 3
-        );
+        return app(FindDuplicatePersonCandidates::class)->execute($nameFields, $this->enteredBirthYear());
+    }
 
-        // only query if at least 1 name has at least 3 characters
-        if (! $hasMinLength) {
-            return new Collection;
+    #[Computed]
+    public function requiresDuplicateAcknowledgment(): bool
+    {
+        $highConfidenceCandidates = $this->highConfidenceCandidates();
+
+        if ($highConfidenceCandidates === []) {
+            return false;
         }
 
-        $teamId = $user->isDeveloper() ? null : $user->currentTeam->id;
-
-        return PersonModel::similarTo($teamId, $nameFields)->get();
+        return ! hash_equals(
+            $this->acknowledgmentToken($highConfidenceCandidates),
+            $this->duplicateAcknowledgmentFingerprint ?? '',
+        );
     }
 
-    /**
-     * Manually trigger the similar-persons search and show the results pane.
-     */
-    public function searchSimilar(): void
+    #[On('duplicate-candidates-acknowledged')]
+    public function acknowledgeDuplicateCandidates(): void
     {
-        $this->searchTriggered = true;
-        unset($this->similarPersons); // bust the computed cache so it re-runs
+        $this->authorizePermission('person:create');
+
+        $highConfidenceCandidates = $this->highConfidenceCandidates();
+
+        abort_if($highConfidenceCandidates === [], 422);
+
+        $this->duplicateAcknowledgmentFingerprint = $this->acknowledgmentToken($highConfidenceCandidates);
+
+        unset($this->requiresDuplicateAcknowledgment);
     }
 
-    /**
-     * Hide the similar-persons results pane and reset the trigger flag.
-     */
-    public function clearSimilar(): void
+    #[On('duplicate-existing-selected')]
+    public function reuseExistingPerson(int $candidateId): void
     {
-        $this->searchTriggered = false;
-        unset($this->similarPersons); // bust cache, mirrors searchSimilar()
+        $this->authorizePermission('person:create');
+
+        $candidate = collect($this->duplicateCandidates)->firstWhere('id', $candidateId);
+
+        abort_unless(is_array($candidate), 404);
+
+        $user   = auth()->user();
+        $person = PersonModel::withoutGlobalScope('team')->findOrFail($candidateId);
+
+        abort_unless($user && $user->currentTeam, 403);
+
+        app(RecordDuplicateResolution::class)->linkedAsSame($user, $person, $candidate['score']);
+
+        $this->redirect($candidate['url']);
+    }
+
+    public function updated(string $property): void
+    {
+        if (! in_array($property, [
+            'form.firstname',
+            'form.surname',
+            'form.birthname',
+            'form.nickname',
+            'form.yob',
+            'form.dob',
+        ], true)) {
+            return;
+        }
+
+        $this->duplicateAcknowledgmentFingerprint = null;
+
+        unset($this->duplicateCandidates, $this->requiresDuplicateAcknowledgment);
     }
 
     public function savePerson(): void
@@ -86,7 +121,20 @@ new class extends Component
             return;
         }
 
-        $validated = $this->validate($this->rules());
+        if ($this->requiresDuplicateAcknowledgment) {
+            $this->addError('duplicateAcknowledgment', __('person.duplicate_acknowledgment_required'));
+
+            return;
+        }
+
+        $validated           = $this->validate($this->rules());
+        $duplicateCandidates = collect($this->duplicateCandidates)
+            ->map(fn (array $candidate): array => [
+                'id'    => $candidate['id'],
+                'score' => $candidate['score'],
+            ])
+            ->values()
+            ->all();
 
         $newPerson = PersonModel::create([
             'firstname' => $validated['form']['firstname'],
@@ -106,9 +154,13 @@ new class extends Component
             $this->savePersonPhotos($newPerson, 'person');
         }
 
+        if ($duplicateCandidates !== []) {
+            app(RecordDuplicateResolution::class)->confirmedDistinct($user, $newPerson, $duplicateCandidates);
+        }
+
         $this->toast()->success(__('app.create'), e($newPerson->name) . ' ' . __('app.created'))->send();
 
-        $this->redirect('/people/' . $newPerson->id);
+        $this->redirectRoute('people.show', ['person' => $newPerson]);
     }
 
     /**
@@ -153,5 +205,50 @@ new class extends Component
             'form.dob'       => __('person.dob'),
             'form.pob'       => __('person.pob'),
         ], $this->getPhotoUploadAttributes());
+    }
+
+    /** @return list<array{id: int, score: float}> */
+    protected function highConfidenceCandidates(): array
+    {
+        return collect($this->duplicateCandidates)
+            ->where('high_confidence', true)
+            ->map(fn (array $candidate): array => [
+                'id'    => $candidate['id'],
+                'score' => $candidate['score'],
+            ])
+            ->values()
+            ->all();
+    }
+
+    protected function enteredBirthYear(): ?int
+    {
+        if (is_string($this->form->dob) && preg_match('/^(\d{4})-/', $this->form->dob, $matches) === 1) {
+            return (int) $matches[1];
+        }
+
+        if ($this->form->yob === null || ! is_numeric($this->form->yob)) {
+            return null;
+        }
+
+        $birthYear = (int) $this->form->yob;
+
+        return $birthYear > 0 ? $birthYear : null;
+    }
+
+    /** @param list<array{id: int, score: float}> $candidates */
+    protected function acknowledgmentToken(array $candidates): string
+    {
+        return hash_hmac(
+            'sha256',
+            json_encode([
+                'firstname'  => $this->form->firstname,
+                'surname'    => $this->form->surname,
+                'birthname'  => $this->form->birthname,
+                'nickname'   => $this->form->nickname,
+                'birthYear'  => $this->enteredBirthYear(),
+                'candidates' => $candidates,
+            ], JSON_THROW_ON_ERROR),
+            (string) config('app.key'),
+        );
     }
 };

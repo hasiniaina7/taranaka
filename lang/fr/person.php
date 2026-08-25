@@ -180,4 +180,15 @@ return [
     'search_similar'       => 'Rechercher des personnes similaires',
     'similar_persons'      => 'Personnes existantes similaires',
     'no_similar_persons'   => 'Aucune personne similaire trouvée pour le moment — saisissez quelques noms et cliquez sur le bouton de recherche.',
-    'similar_persons_hint' => 'Pour éviter d’ajouter une personne plus d’une fois, des personnes existantes similaires sont affichées ici après avoir saisi un prénom, un nom de famille, un nom de naissance ou un surnom et cliqué sur le bouton de recherche.', ];
+    'similar_persons_hint' => 'Pour éviter d’ajouter une personne plus d’une fois, des personnes existantes similaires sont affichées ici après avoir saisi un prénom, un nom de famille, un nom de naissance ou un surnom et cliqué sur le bouton de recherche.',
+
+    'duplicate_warning_title'           => 'Une personne similaire existe peut-être déjà',
+    'duplicate_warning_intro'           => 'Vérifiez ces correspondances avant de créer une autre fiche.',
+    'duplicate_high_confidence'         => 'Correspondance probable',
+    'duplicate_low_confidence'          => 'Correspondance faible',
+    'duplicate_similarity'              => 'Similarité',
+    'duplicate_private_profile'         => 'Profil privé — les informations personnelles sont masquées.',
+    'duplicate_same_person'             => 'C’est la même personne → utiliser la fiche existante',
+    'duplicate_distinct_people'         => 'Ce sont des personnes différentes → continuer',
+    'duplicate_acknowledgment_required' => 'Vérifiez la correspondance probable et confirmez qu’il s’agit de personnes différentes avant d’enregistrer.',
+];

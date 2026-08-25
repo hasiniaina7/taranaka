@@ -198,4 +198,14 @@ return [
     'similar_persons'      => 'Benzer mevcut kişiler',
     'no_similar_persons'   => 'Henüz benzer kişi bulunamadı — bazı isimler girin ve arama düğmesine tıklayın.',
     'similar_persons_hint' => 'Bir kişiyi birden fazla kez eklememek için, bir ad, soyad, doğum adı veya takma ad yazıp arama düğmesine tıkladıktan sonra burada benzer mevcut kişiler gösterilir.',
+
+    'duplicate_warning_title'           => 'Benzer bir kişi zaten mevcut olabilir',
+    'duplicate_warning_intro'           => 'Yeni bir kayıt oluşturmadan önce bu eşleşmeleri inceleyin.',
+    'duplicate_high_confidence'         => 'Olası eşleşme',
+    'duplicate_low_confidence'          => 'Düşük güvenli eşleşme',
+    'duplicate_similarity'              => 'Benzerlik',
+    'duplicate_private_profile'         => 'Gizli profil — kişisel bilgiler saklanmıştır.',
+    'duplicate_same_person'             => 'Bu aynı kişi → mevcut kaydı kullan',
+    'duplicate_distinct_people'         => 'Bunlar farklı kişiler → devam et',
+    'duplicate_acknowledgment_required' => 'Kaydetmeden önce olası eşleşmeyi inceleyin ve bunların farklı kişiler olduğunu doğrulayın.',
 ];

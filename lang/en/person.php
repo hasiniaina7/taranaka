@@ -199,4 +199,14 @@ return [
     'similar_persons'      => 'Similar existing persons',
     'no_similar_persons'   => 'No similar persons found yet — enter some names and click the search button.',
     'similar_persons_hint' => 'To avoid adding a person more than once, similar existing persons are shown here after you type a first name, surname, birthname or nickname and click the search button.',
+
+    'duplicate_warning_title'           => 'A similar person may already exist',
+    'duplicate_warning_intro'           => 'Review these matches before creating another record.',
+    'duplicate_high_confidence'         => 'Likely match',
+    'duplicate_low_confidence'          => 'Low-confidence match',
+    'duplicate_similarity'              => 'Similarity',
+    'duplicate_private_profile'         => 'Private profile — personal details are hidden.',
+    'duplicate_same_person'             => 'This is the same person → use existing record',
+    'duplicate_distinct_people'         => 'These are different people → continue',
+    'duplicate_acknowledgment_required' => 'Review the likely match and confirm these are different people before saving.',
 ];

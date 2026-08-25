@@ -6,7 +6,7 @@
             {{-- firstname --}}
             <div class="col-span-6 md:col-span-3">
                 <x-ts-input
-                    wire:model="form.firstname"
+                    wire:model.live.debounce.500ms="form.firstname"
                     id="firstname"
                     label="{{ __('person.firstname') }} :"
                     autocomplete="firstname"
@@ -17,7 +17,7 @@
             {{-- surname --}}
             <div class="col-span-6 md:col-span-3">
                 <x-ts-input
-                    wire:model="form.surname"
+                    wire:model.live.debounce.500ms="form.surname"
                     id="surname"
                     label="{{ __('person.surname') }} : *"
                     autocomplete="surname"
@@ -27,7 +27,7 @@
             {{-- birthname --}}
             <div class="col-span-6 md:col-span-3">
                 <x-ts-input
-                    wire:model="form.birthname"
+                    wire:model.live.debounce.500ms="form.birthname"
                     id="birthname"
                     label="{{ __('person.birthname') }} :"
                     autocomplete="birthname"
@@ -37,7 +37,7 @@
             {{-- nickname --}}
             <div class="col-span-6 md:col-span-3">
                 <x-ts-input
-                    wire:model="form.nickname"
+                    wire:model.live.debounce.500ms="form.nickname"
                     id="nickname"
                     label="{{ __('person.nickname') }}"
                     autocomplete="nickname"
@@ -89,7 +89,7 @@
             {{-- yob --}}
             <div class="col-span-6 md:col-span-3">
                 <x-ts-input
-                    wire:model="form.yob"
+                    wire:model.live.debounce.500ms="form.yob"
                     id="yob"
                     label="{{ __('person.yob') }} :"
                     autocomplete="yob"
@@ -102,13 +102,17 @@
             {{-- dob --}}
             <div class="col-span-6 md:col-span-3">
                 <x-ts-date
-                    wire:model="form.dob"
+                    wire:model.live.debounce.500ms="form.dob"
                     id="dob"
                     label="{{ __('person.dob') }} :"
                     format="YYYY-MM-DD"
                     :max-date="now()"
                     placeholder="{{ __('app.select') }} ..."
                 />
+            </div>
+
+            <div class="col-span-6">
+                <livewire:people.duplicate-warning-panel :candidates="$this->duplicateCandidates" />
             </div>
 
             {{-- pob --}}
@@ -134,6 +138,17 @@
     </div>
 
     <div class="flex items-center justify-end p-4">
-        <x-ts-button type="submit" color="primary"> {{ __('app.save') }} </x-ts-button>
+        <div class="flex flex-col items-end gap-2">
+            <x-input-error for="duplicateAcknowledgment" />
+
+            <x-ts-button
+                type="submit"
+                color="primary"
+                :disabled="$this->requiresDuplicateAcknowledgment"
+                wire:loading.attr="disabled"
+            >
+                {{ __('app.save') }}
+            </x-ts-button>
+        </div>
     </div>
 </div>

@@ -30,6 +30,11 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
+ * Represents one canonical individual and the relationships that form the genealogy graph.
+ *
+ * The model centralizes graph relations, identity search, derived life data, and persistence hooks;
+ * callers rely on its scopes to remain team-aware unless they explicitly remove that boundary.
+ *
  * @property int $id
  * @property int $team_id
  * @property string|null $firstname
@@ -57,7 +62,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read Collection<int, Couple> $couples
  * @property-read Collection<int, PersonEvent> $events
  */
-final class Person extends Model implements HasMedia
+class Person extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\PersonFactory> */
     use HasFactory;
@@ -358,7 +363,11 @@ final class Person extends Model implements HasMedia
     #[Scope]
     public function scopeSimilarTo(Builder $query, ?int $teamId, array $terms): Builder
     {
-        $terms = array_filter($terms);
+        $terms = collect($terms)
+            ->map(fn (?string $term): string => mb_trim(strip_tags((string) $term)))
+            ->filter()
+            ->map(fn (string $term): string => str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $term))
+            ->all();
 
         if (empty($terms)) {
             return $query->whereRaw('0 = 1');

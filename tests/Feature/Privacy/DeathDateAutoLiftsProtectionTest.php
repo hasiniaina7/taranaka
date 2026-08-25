@@ -11,6 +11,8 @@ uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 test('recording a death date auto-lifts protection without a separate publish step', function (): void {
     $user   = User::factory()->withPersonalTeam()->create();
     $person = Person::factory()->withUser($user)->create([
+        'dob'                 => '1980-01-01',
+        'yob'                 => 1980,
         'yod'                 => null,
         'dod'                 => null,
         'is_publicly_visible' => false,
