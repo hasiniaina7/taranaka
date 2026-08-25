@@ -5,6 +5,61 @@ function toChartId(id) {
     return `p${id}`;
 }
 
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    })[char]);
+}
+
+function initials(name) {
+    return (name ?? '')
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0]?.toUpperCase() ?? '')
+        .join('');
+}
+
+/**
+ * Renders each node as a card matching the approved maquette: a white,
+ * rounded card with a circular avatar (or initials fallback), a serif name,
+ * a colored accent rule, and a living/deceased status dot. Replaces
+ * family-chart's default SVG card entirely (setCardHtml + a custom
+ * cardInnerHtmlCreator), so this owns 100% of each card's markup.
+ */
+function buildCardHtml(datum) {
+    const person = datum.data.data;
+    const label = escapeHtml(person.label ?? '');
+    const isPending = Boolean(person.pending);
+    const isUnknown = !person.personId && !isPending;
+    const statusClass =
+        person.isLiving === true ? 'is-living' : person.isLiving === false ? 'is-deceased' : '';
+
+    const avatar = person.avatar
+        ? `<img src="${escapeHtml(person.avatar)}" alt="" loading="lazy">`
+        : `<span>${escapeHtml(initials(person.label))}</span>`;
+
+    const stateClass = isPending
+        ? ' tree-card--pending'
+        : isUnknown
+          ? ' tree-card--unknown'
+          : '';
+
+    return `
+        <div class="tree-card${stateClass}">
+            <span class="tree-card-avatar">
+                ${avatar}
+                ${statusClass ? `<span class="tree-card-status ${statusClass}"></span>` : ''}
+            </span>
+            <span class="tree-card-name">${label || (isPending ? '…' : '?')}</span>
+        </div>
+    `;
+}
+
 /**
  * Flatten the fully-computed descendant tree (spec 004) into family-chart's
  * flat {id, data, rels} array. The whole tree is already present, so no
@@ -191,8 +246,9 @@ window.familyTreeCanvas = ({ mode, tree, profileUrlTemplate }) => ({
         if (!this.chart) {
             this.chart = createChart(this.$refs.canvas, data);
             this.chart
-                .setCardSvg()
-                .setCardDisplay((datum) => datum.data.label)
+                .setCardHtml()
+                .setCardDim({ w: 232, h: 72 })
+                .setCardInnerHtmlCreator(buildCardHtml)
                 .setOnCardClick((event, datum) => this.handleCardClick(datum));
             // Partner cards are already synthesized in the payload (see attachPartners),
             // so family-chart's own "missing second parent" placeholder would be a
