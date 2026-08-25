@@ -6,6 +6,7 @@ namespace App\Livewire\People\Descendants;
 
 use App\Actions\BuildDescendantNodes;
 use App\Models\Person;
+use App\Support\PersonTreePresentation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
@@ -56,6 +57,11 @@ class Tree extends Component
         return view('livewire.people.descendants.tree');
     }
 
+    public function limitReached(): bool
+    {
+        return $this->nodeReachesLimit($this->tree);
+    }
+
     /**
      * @return array{
      *     id: int,
@@ -87,6 +93,22 @@ class Tree extends Component
         );
     }
 
+    /** @param array<string, mixed> $node */
+    protected function nodeReachesLimit(array $node): bool
+    {
+        if (($node['degree'] ?? null) === $this->maxDepth) {
+            return true;
+        }
+
+        foreach ($node['children'] ?? [] as $child) {
+            if ($this->nodeReachesLimit($child)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param  array<string, mixed>  $node
      * @param  Collection<string, Collection<int, array<string, mixed>>>  $nodesByParent
@@ -116,6 +138,8 @@ class Tree extends Component
             'death_year'      => $person->yod,
             'is_living'       => ! $person->isDeceased(),
             'lineages'        => [],
+            'photo_url'       => PersonTreePresentation::photoUrl($person),
+            'partners'        => PersonTreePresentation::partners($person),
             'children'        => [],
         ];
     }
